@@ -9,19 +9,12 @@ import router from './plugins/router'
 import vueHeadful from 'vue-headful';
 import VueTouchKeyboard from "vue-touch-keyboard";
 
-export const bus = new Vue();
-
 Vue.config.productionTip = false;
 
-Vue.use(VueResource);
-Vue.use(require('vue-cookies'));
-Vue.use(VueTouchKeyboard);
-Vue.use({
-    install() {
-      Vue.prototype.destroy = Vue.prototype.$destroy;
-    },
-  });
+export const bus = new Vue();
 
+Vue.use(VueResource);
+Vue.use(VueTouchKeyboard);
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*';
