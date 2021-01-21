@@ -38,8 +38,8 @@
                                 :rules="[v => !!v || 'Hostname is required']"
                                 label="Hostname/IP"
                                 required
-                                @click.native="show"
-                                @blur="hide"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
                                 data-layout="normal"
                             ></v-text-field>
                         </v-col>
@@ -49,8 +49,8 @@
                                 :rules="[v => !!v || 'Port is required']"
                                 label="Port"
                                 required
-                                @click.native="show"
-                                @blur="hide"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
                                 data-layout="numeric"
                             ></v-text-field>
                         </v-col>
@@ -88,8 +88,8 @@
                                 :rules="[v => !!v || 'Hostname is required']"
                                 label="Hostname/IP"
                                 required
-                                @click.native="show"
-                                @blur="hide"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
                                 data-layout="normal"
                             ></v-text-field>
                         </v-col>
@@ -99,8 +99,8 @@
                                 :rules="[v => !!v || 'Port is required']"
                                 label="Port"
                                 required
-                                @click.native="show"
-                                @blur="hide"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
                                 data-layout="numeric"
                             ></v-text-field>
                         </v-col>
@@ -159,7 +159,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0 pb-0 mb-0">
-                            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="mt-0 pb-0"></v-switch>
+                            <v-switch v-model="toggleVirtualKeyboard" label="Virtual Keyboard" class="mt-0 pb-0"></v-switch>
                         </v-col>
                         <v-col class="text-center mt-0">
                             <v-btn @click="dialogAddPrinter.bool = true">add printer</v-btn>
@@ -215,20 +215,14 @@ export default {
                 return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
             }
         },
-        virtualKeyboard: {
+        toggleVirtualKeyboard: {
             get() {
-                return this.$cookies.isKey("enableVirtualKeyboard");
+                return localStorage.virtualKeyboard;
             },
             set(newStatus) {
-                var cookieValue
-                if(newStatus==false){
-                    cookieValue = this.$cookies.remove('enableVirtualKeyboard')
-                    bus.$emit("updatekeyboardcookie");
-                    return cookieValue;
-                }
-                cookieValue = this.$cookies.set('enableVirtualKeyboard','default');
-                bus.$emit("updatekeyboardcookie");
-                return cookieValue;
+                localStorage.virtualKeyboard = newStatus
+                bus.$emit("updatekeyboardstatus");
+                return localStorage.virtualKeyboard;
             }
         },
         showCorsInfo: {

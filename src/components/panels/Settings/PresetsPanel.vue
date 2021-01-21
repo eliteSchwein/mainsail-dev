@@ -71,8 +71,8 @@
                                                     hide-details="auto"
                                                     :rules="[rules.required, rules.unique]"
                                                     dense
-                                                    @click.native="show"
-                                                    @blur="hide"
+                                                    @click.native="showKeyboard"
+                                                    @blur="hideKeyboard"
                                                     data-layout="normal"
                                                 ></v-text-field>
                                             </v-col>
@@ -86,8 +86,8 @@
                                             <v-text-field
                                                 v-model="dialog.values[heater.name].value"
                                                 :label="convertName(heater.name)"
-                                                @click.native="show"
-                                                @blur="hide"
+                                                @click.native="showKeyboard"
+                                                @blur="hideKeyboard"
                                                 data-layout="numeric"
                                                 hide-details="auto"
                                                 type="number"
@@ -103,8 +103,8 @@
                                             <v-text-field
                                                 v-model="dialog.values['temperature_fan '+fan.name].value"
                                                 :label="convertName(fan.name)"
-                                                @click.native="show"
-                                                @blur="hide"
+                                                @click.native="showKeyboard"
+                                                @blur="hideKeyboard"
                                                 data-layout="numeric"
                                                 hide-details="auto"
                                                 type="number"
@@ -118,8 +118,8 @@
                                             name="input-7-4"
                                             label="Custom G-Code"
                                             v-model="dialog.gcode"
-                                            @click.native="show"
-                                            @blur="hide"
+                                            @click.native="showKeyboard"
+                                            @blur="hideKeyboard"
                                             data-layout="normal"
                                         ></v-textarea>
                                     </v-col>
@@ -176,6 +176,9 @@
                                         label="Custom G-Code"
                                         v-model="cooldownDialog.gcode"
                                         :rules="[rules.required]"
+                                        @click.native="showKeyboard"
+                                        @blur="hideKeyboard"
+                                        data-layout="normal"
                                     ></v-textarea>
                                 </v-col>
                             </v-row>
@@ -243,10 +246,10 @@
             this.clearDialog()
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             convertName: convertName,

@@ -63,8 +63,7 @@
                 </li>
             </ul>
             <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2" v-if="showVersion">
-                
-            v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
+                v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
             </p>
         </v-navigation-drawer>
 
@@ -86,9 +85,9 @@
                     </keep-alive>
                 </v-container>
             </v-scroll-y-transition>
-        </v-main> 
+        </v-main>
         
-        <v-footer app class="d-block" style="z-index:20000" v-if="visible&virtualKeyboard">
+        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&&keyboardVisible">
             
             <div :class="getTheme+' keyboard-context'" >
                 <div class="keyboard-context-name">
@@ -100,7 +99,7 @@
                 </div>
             </div>
             
-            <vue-touch-keyboard :class="getTheme" @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
+            <vue-touch-keyboard :class="getTheme" @click.native="clickKeyboard" style="z-index: 200; " :options="keyboardOptions"  :layout="keyboardLayout" :cancel="hideKeyboard" :accept="clickAcceptKeyboard" :input="keyboardInput" :next="clearKeyboard" />
         </v-footer>
 
         <v-snackbar
@@ -135,9 +134,9 @@
 
 <script>
     import {bus} from "./main"
-    import { mapState, mapGetters } from 'vuex'
     import routes from './routes'
-    import layouts from "./inputs/KeyboardLayouts"
+    import { mapState, mapGetters } from 'vuex'
+    import keyboardLayouts from "./inputs/KeyboardLayouts"
     import TopCornerMenu from "@/components/TopCornerMenu"
     import UpdateDialog from "@/components/UpdateDialog"
     import ConnectingDialog from "@/components/ConnectingDialog";
@@ -157,21 +156,20 @@ export default {
         TopCornerMenu,
     },
     data: () => ({
-        enabledKeyboard: false,
-        overlayDisconnect: true,
+        keyboardActivated: false,
+        keyboardVisible: false,
+        keyboardLayout: "normal",
+        keyboardInput: null,
+        keyboardInputvalue: null,
+        keyboardInputname: null,
+        keyboardOptions: {
+            useKbEvents: true,
+            preventClickEvent: true
+        },
         drawer: null,
         activeClass: 'active',
         routes: routes.filter((element) => element.title !== "Printers"),
         boolNaviHeightmap: false,
-        visible: false,
-        layout: "normal",
-        input: null,
-        inputvalue: null,
-        inputname: null,
-        options: {
-            useKbEvents: true,
-            preventClickEvent: true
-        },
         uploadSnackbar: {
             status: false,
             filename: "",
@@ -186,8 +184,8 @@ export default {
         }
     }),
     created () {
-        this.enabledKeyboard = this.$cookies.isKey("enableVirtualKeyboard");
-        this.$vuetify.theme.dark = !this.$cookies.isKey("lightMode");
+        this.keyboardActivated = localStorage.virtualKeyboard;
+        this.$vuetify.theme.dark = true;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
@@ -230,14 +228,9 @@ export default {
                 return this.$store.getters["printer/getPrintPercent"]
             }
         },
-        virtualKeyboard: {
-            get() {
-                return this.enabledKeyboard;
-            },
-        },
         showVersion: {
             get() {
-                if(this.visible==false){
+                if(this.keyboardVisible==false){
                     return true;
                 }
                 return false;
@@ -245,18 +238,18 @@ export default {
         },
         virtualKeyboardInput: {
             get() {
-                if(this.inputvalue==null){
+                if(this.keyboardInputvalue==null){
                     return null;
                 }
-                return this.inputvalue;
+                return this.keyboardInputvalue;
             },
         },
         virtualKeyboardName: {
             get() {
-                if(this.inputname==null){
+                if(this.keyboardInputname==null){
                     return null;
                 }
-                return this.inputname;
+                return this.keyboardInputname;
             },
         },
         defaultFavicons: {
@@ -299,51 +292,51 @@ export default {
     },
     mounted() {
         bus.$on('showkeyboard', (event) => {
-            if(!this.$cookies.isKey("enableVirtualKeyboard")){
+            if(!localStorage.virtualKeyboard){
                 return;
             }
-            this.input = event.target;
-            this.inputvalue = this.input.value;
-            this.inputname = this.input.labels[0].textContent;
-            this.layout = layouts[this.input.dataset.layout];
-            if (!this.visible)
-                this.visible = true
+            this.keyboardInput = event.target;
+            this.keyboardInputvalue = this.keyboardInput.value;
+            this.keyboardInputname = this.keyboardInput.labels[0].textContent;
+            this.keyboardLayout = keyboardLayouts[this.keyboardInput.dataset.layout];
+            if (!this.keyboardVisible)
+                this.keyboardVisible = true
         });
-        bus.$on('updatekeyboardcookie', () => {
-            this.enabledKeyboard=this.$cookies.isKey("enableVirtualKeyboard")
+        bus.$on('updatekeyboardstatus', () => {
+            this.keyboardActivated=localStorage.virtualKeyboard
         });
         bus.$on('hidekeyboard', () => {
-            this.visible = false;
-            this.inputvalue = null;
-            this.inputname = null;
-            this.input = null;
+            this.keyboardVisible = false;
+            this.keyboardInputvalue = null;
+            this.keyboardInputname = null;
+            this.keyboardInput = null;
         });
     },
     methods: {
-        keyboardClick(){
-            if(this.input!=null){
-                this.inputvalue=this.input.value;
+        clickKeyboard(){
+            if(this.keyboardInput!=null){
+                this.keyboardInputvalue=this.keyboardInput.value;
             }
         },
         clearKeyboard(){
-            this.input.value=null,
-            this.inputvalue=null
+            this.keyboardInput.value=null,
+            this.keyboardInputvalue=null
         },
-        accept() {
-          this.hide();
+        clickAcceptKeyboard() {
+          this.hideKeyboard();
         },
-        showkeyboard:function(e) {
-            this.input = e.target;
-            this.layout = e.target.dataset.layout;
+        showKeyboard:function(e) {
+            this.keyboardInput = e.target;
+            this.keyboardLayout = e.target.dataset.layout;
 
-            if (!this.visible)
-                this.visible = true
+            if (!this.keyboardVisible)
+                this.keyboardVisible = true
         },
-        hide() {
-          this.visible = false;
-          this.inputvalue = null;
-          this.inputname = null;
-          this.input = null;
+        hideKeyboard() {
+          this.keyboardVisible = false;
+          this.keyboardInputvalue = null;
+          this.keyboardInputname = null;
+          this.keyboardInput = null;
         },
         clickEmergencyStop: function() {
             this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
