@@ -192,14 +192,11 @@ export default {
         }
     }),
     created () {
-        this.keyboardActivated = this.getKeyboardStatus=="enabled";
-        this.$vuetify.theme.dark = !this.getVuetifyLightMode;
+        this.keyboardActivated = localStorage.virtualKeyboard=="enabled";
+        this.$vuetify.theme.dark = localStorage.lightMode!="enabled";
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
-        getVuetifyLightMode: function(){
-            return localStorage.lightMode
-        },
         getTheme: function(){
             if(this.$vuetify.theme.dark){
                 return "theme--dark"
@@ -276,11 +273,17 @@ export default {
         },
         sidebarBackground: {
             get() {
+                if(!this.$vuetify.theme.dark){
+                    return "/img/sidebar-background-light.png"
+                }
                 return this.$store.getters["files/getSidebarBackground"]
             }
         },
         mainBackground: {
             get() {
+                if(!this.$vuetify.theme.dark){
+                    return "/img/main-background-light.jpg"
+                }
                 return this.$store.getters["files/getMainBackground"]
             }
         },

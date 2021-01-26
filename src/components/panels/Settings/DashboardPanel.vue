@@ -66,11 +66,15 @@
             },
             boolLightMode: {
                 get() {
-                    return localStorage.lightMode;
+                    return localStorage.getItem("lightMode")=="enabled";
                 },
-                set(newStatus) {
-                    localStorage.lightMode=newStatus
-                    return localStorage.lightMode;
+                set(enable) {
+                    if(enable)
+                        localStorage.lightMode="enabled"
+                    else
+                        localStorage.lightMode="disabled"
+                    this.$vuetify.theme.dark = localStorage.lightMode!="enabled";
+                    return localStorage.lightMode=="enabled";
                 }
             },
             boolShowTempchartOnDashboard: {
