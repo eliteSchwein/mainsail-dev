@@ -62,16 +62,6 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="">
-                            <v-btn
-                                color="red"
-                                outlined
-                                class="middle minwidth-0"
-                                @click="cancelAddPrinter"
-                            >
-                                Cancel
-                            </v-btn>
-                        </v-col>
                         <v-col class="text-right">
                             <v-btn
                                 color="primary"
@@ -288,9 +278,6 @@ export default {
             this.dialogEditPrinter.bool = false
 
             this.checkPrinters()
-        },
-        cancelAddPrinter() {
-            this.dialogAddPrinter.bool = false
         },
         delPrinter() {
             this.$store.commit("farm/removePrinter", { name: this.dialogEditPrinter.index })
