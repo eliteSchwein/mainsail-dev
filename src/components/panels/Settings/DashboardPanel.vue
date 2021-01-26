@@ -66,18 +66,15 @@
             },
             boolLightMode: {
                 get() {
-                    return this.$cookies.isKey("lightMode");
+                    return localStorage.getItem("lightMode")=="enabled";
                 },
-                set(newStatus) {
-                    var cookieValue
-                    if(newStatus==false){
-                        this.$vuetify.theme.dark = true;
-                        cookieValue = this.$cookies.remove('lightMode')
-                        return cookieValue;
-                    }
-                    this.$vuetify.theme.dark = false;
-                    cookieValue = this.$cookies.set('lightMode','default');
-                    return cookieValue;
+                set(enable) {
+                    if(enable)
+                        localStorage.lightMode="enabled"
+                    else
+                        localStorage.lightMode="disabled"
+                    this.$vuetify.theme.dark = localStorage.lightMode!="enabled";
+                    return localStorage.lightMode=="enabled";
                 }
             },
             boolShowTempchartOnDashboard: {

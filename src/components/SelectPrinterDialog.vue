@@ -227,12 +227,15 @@ export default {
         },
         toggleVirtualKeyboard: {
             get() {
-                return localStorage.virtualKeyboard;
+                return localStorage.virtualKeyboard=="enabled";
             },
-            set(newStatus) {
-                localStorage.virtualKeyboard = newStatus
+            set(enable) {
+                if(enable)
+                    localStorage.virtualKeyboard = "enabled"
+                else
+                    localStorage.virtualKeyboard = "disabled"
                 bus.$emit("updatekeyboardstatus");
-                return localStorage.virtualKeyboard;
+                return localStorage.virtualKeyboard=="enabled";
             }
         },
         showCorsInfo: {
@@ -250,10 +253,10 @@ export default {
         }
     },
     methods: {
-        show:function(e){
+        showKeyboard:function(e){
             bus.$emit("showkeyboard",e);
         },
-        hide:function(){
+        hideKeyboard:function(){
             bus.$emit("hidekeyboard");
         },
         addPrinter() {

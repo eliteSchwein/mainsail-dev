@@ -95,7 +95,7 @@
             </v-scroll-y-transition>
         </v-main>
         
-        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&&keyboardActivated">
+        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardActivated && keyboardVisible">
             
             <div :class="getTheme+' keyboard-context'" >
                 <div class="keyboard-context-name">
@@ -193,7 +193,7 @@ export default {
     }),
     created () {
         this.keyboardActivated = localStorage.virtualKeyboard=="enabled";
-        this.$vuetify.theme.dark = true;
+        this.$vuetify.theme.dark = localStorage.lightMode!="enabled";
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
@@ -273,22 +273,16 @@ export default {
         },
         sidebarBackground: {
             get() {
-                var background = this.$store.getters["files/getSidebarBackground"]
-                if(background=="/img/sidebar-background.png"){
-                    if(!this.$vuetify.theme.dark){
-                        return "/img/sidebar-background-light.png"
-                    }
+                if(!this.$vuetify.theme.dark){
+                    return "/img/sidebar-background-light.png"
                 }
                 return this.$store.getters["files/getSidebarBackground"]
             }
         },
         mainBackground: {
             get() {
-                var background = this.$store.getters["files/getMainBackground"]
-                if(background=="/img/main-background.jpg"){
-                    if(!this.$vuetify.theme.dark){
-                        return "/img/main-background-light.jpg"
-                    }
+                if(!this.$vuetify.theme.dark){
+                    return "/img/main-background-light.jpg"
                 }
                 return this.$store.getters["files/getMainBackground"]
             }
@@ -317,7 +311,6 @@ export default {
                 this.keyboardVisible = true
         });
         bus.$on('updatekeyboardstatus', () => {
-            console.log(localStorage.virtualKeyboard=="enabled")
             this.keyboardActivated=localStorage.virtualKeyboard=="enabled"
         });
         bus.$on('hidekeyboard', () => {
