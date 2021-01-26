@@ -250,10 +250,10 @@ export default {
         }
     },
     methods: {
-        show:function(e){
+        showKeyboard:function(e){
             bus.$emit("showkeyboard",e);
         },
-        hide:function(){
+        hideKeyboard:function(){
             bus.$emit("hidekeyboard");
         },
         addPrinter() {

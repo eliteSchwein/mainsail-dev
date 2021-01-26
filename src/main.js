@@ -23,8 +23,6 @@ Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIO
 
 Vue.component('vue-headful', vueHeadful);
 
-Vue.$cookies.config('1y')
-
 fetch('/config.json')
 .then(res => res.json())
 .then(file => {

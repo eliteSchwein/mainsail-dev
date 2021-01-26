@@ -95,7 +95,7 @@
             </v-scroll-y-transition>
         </v-main>
         
-        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&&keyboardVisible">
+        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardActivated && keyboardVisible">
             
             <div :class="getTheme+' keyboard-context'" >
                 <div class="keyboard-context-name">
@@ -192,11 +192,14 @@ export default {
         }
     }),
     created () {
-        this.keyboardActivated = localStorage.virtualKeyboard;
-        this.$vuetify.theme.dark = true;
+        this.keyboardActivated = this.getKeyboardStatus=="enabled";
+        this.$vuetify.theme.dark = !this.getVuetifyLightMode;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
+        getVuetifyLightMode: function(){
+            return localStorage.lightMode
+        },
         getTheme: function(){
             if(this.$vuetify.theme.dark){
                 return "theme--dark"
@@ -273,23 +276,11 @@ export default {
         },
         sidebarBackground: {
             get() {
-                var background = this.$store.getters["files/getSidebarBackground"]
-                if(background=="/img/sidebar-background.png"){
-                    if(!this.$vuetify.theme.dark){
-                        return "/img/sidebar-background-light.png"
-                    }
-                }
                 return this.$store.getters["files/getSidebarBackground"]
             }
         },
         mainBackground: {
             get() {
-                var background = this.$store.getters["files/getMainBackground"]
-                if(background=="/img/main-background.jpg"){
-                    if(!this.$vuetify.theme.dark){
-                        return "/img/main-background-light.jpg"
-                    }
-                }
                 return this.$store.getters["files/getMainBackground"]
             }
         },
@@ -306,7 +297,7 @@ export default {
     },
     mounted() {
         bus.$on('showkeyboard', (event) => {
-            if(!localStorage.virtualKeyboard){
+            if(!localStorage.virtualKeyboard=="enabled"){
                 return;
             }
             this.keyboardInput = event.target;
@@ -317,7 +308,8 @@ export default {
                 this.keyboardVisible = true
         });
         bus.$on('updatekeyboardstatus', () => {
-            this.keyboardActivated=localStorage.virtualKeyboard
+            console.log("keyboard "+localStorage.virtualKeyboard=="enabled")
+            this.keyboardActivated=localStorage.virtualKeyboard=="enabled"
         });
         bus.$on('hidekeyboard', () => {
             this.keyboardVisible = false;

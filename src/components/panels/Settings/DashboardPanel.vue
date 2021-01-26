@@ -66,18 +66,11 @@
             },
             boolLightMode: {
                 get() {
-                    return this.$cookies.isKey("lightMode");
+                    return localStorage.lightMode;
                 },
                 set(newStatus) {
-                    var cookieValue
-                    if(newStatus==false){
-                        this.$vuetify.theme.dark = true;
-                        cookieValue = this.$cookies.remove('lightMode')
-                        return cookieValue;
-                    }
-                    this.$vuetify.theme.dark = false;
-                    cookieValue = this.$cookies.set('lightMode','default');
-                    return cookieValue;
+                    localStorage.lightMode=newStatus
+                    return localStorage.lightMode;
                 }
             },
             boolShowTempchartOnDashboard: {

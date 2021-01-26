@@ -30,6 +30,10 @@ export default {
 			)
 		)
 		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
+		
+		if(localStorage.lightMode){
+			return '/img/sidebar-background-light.jpg'
+		}
 
 		return '/img/sidebar-background.png'
 	},
@@ -45,6 +49,10 @@ export default {
 			)
 		)
 		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
+
+		if(localStorage.lightMode){
+			return '/img/main-background-light.jpg'
+		}
 
 		return '/img/main-background.jpg'
 	},
