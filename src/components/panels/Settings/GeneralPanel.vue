@@ -19,7 +19,6 @@
                 @blur="hideKeyboard"
                 data-layout="normal"
             ></v-text-field>
-            <v-switch v-model="toggleVirtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0"></v-switch>
         </v-card-text>
         
     </v-card>
@@ -42,19 +41,6 @@
                 },
                 set(newName) {
                     return this.$store.dispatch('gui/setSettings', { general: { printername: newName } });
-                }
-            },
-            toggleVirtualKeyboard: {
-                get() {
-                    return localStorage.virtualKeyboard=="enabled";
-                },
-                set(enable) {
-                    if(enable)
-                        localStorage.virtualKeyboard = "enabled"
-                    else
-                        localStorage.virtualKeyboard = "disabled"
-                    bus.$emit("updatekeyboardstatus");
-                    return localStorage.virtualKeyboard=="enabled";
                 }
             },
         },

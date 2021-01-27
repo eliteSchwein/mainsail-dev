@@ -195,6 +195,9 @@ export default {
         this.keyboardActivated = localStorage.virtualKeyboard=="enabled";
         this.$vuetify.theme.dark = localStorage.lightMode!="enabled";
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
+        if(!this.remoteMode){
+            require('./scale/index');
+        }
     },
     computed: {
         getTheme: function(){

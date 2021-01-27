@@ -17,8 +17,17 @@ export function getDefaultState() {
 			hiddenMacros: [],
 			hiddenTempChart: [],
 		},
-		neopixelcenter:{
-			color:"#FFFFFFFF",
+		neopixel:{
+			swatches:[
+				['#FF0000FF', '#AA0000FF', '#550000FF'],
+				['#FFFF00FF', '#AAAA00FF', '#555500FF'],
+				['#00FF00FF', '#00AA00FF', '#005500FF'],
+				['#00FFFFFF', '#00AAAAFF', '#005555FF'],
+				['#0000FFFF', '#0000AAFF', '#000055FF'],
+				['#8A00FFFF', '#5D01ABFF', '#2B014FFF'],
+				['#F600FFFF', '#9F01A4FF', '#460048FF'],
+				['#FFCB5FFF', '#FFFFFFFF', '#A5FFFFFF'],
+			],
 			stripname:"",
 		},
 		modules: {
@@ -45,40 +54,6 @@ export function getDefaultState() {
 			flipX: false,
 			flipY: false,
 			bool: false,
-		},
-		preheatbutton: {
-			profiles: [
-				{
-					id: 1,
-					material: "pla",
-					heater: 185,
-					bed:50
-				},
-				{
-					id: 2,
-					material: "petg",
-					heater: 200,
-					bed:70
-				},
-				{
-					id: 3,
-					material: "abs",
-					heater: 230,
-					bed:90
-				},
-				{
-					id: 4,
-					material: "",
-					heater: 0,
-					bed:0
-				},
-				{
-					id: 5,
-					material: "",
-					heater: 0,
-					bed:0
-				},
-			]
 		},
 		console: {
 			hideWaitTemperatures: true,

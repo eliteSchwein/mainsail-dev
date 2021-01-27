@@ -3,16 +3,17 @@
         <v-row>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-general-panel></settings-general-panel>
-                <settings-webcam-panel class="mt-6"></settings-webcam-panel>
-                <settings-dashboard-panel class="mt-6"></settings-dashboard-panel>
                 <settings-console-panel class="mt-6"></settings-console-panel>
+                <settings-theme-panel class="mt-6"></settings-theme-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-macros-panel></settings-macros-panel>
+                <settings-dashboard-panel></settings-dashboard-panel>
+                <settings-webcam-panel class="mt-6"></settings-webcam-panel>
+                <settings-accessibility-panel class="mt-6"></settings-accessibility-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-presets-panel></settings-presets-panel>
-                <settings-remote-printers-panel class="mt-6"></settings-remote-printers-panel>
+                <settings-neopixel></settings-neopixel>
+                <settings-scale-panel class="mt-6" v-if="!remoteMode"></settings-scale-panel>
             </v-col>
         </v-row>
     </div>
@@ -23,6 +24,7 @@
     export default {
         computed: {
             ...mapState({
+                remoteMode: state => state.socket.remoteMode,
             }),
         },
         methods: {
