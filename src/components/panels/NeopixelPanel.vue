@@ -18,18 +18,20 @@
         <v-card-text class="px-0 py-0">
             <v-container class="px-0">
                 <v-row align="center" class="text-center">
-                    <v-col class="py-2 px-5 pr-0" style="margin-left: 5px">
+                    <v-col class="py-2 px-5 pr-0" style="margin-left: 5px;max-width: 91%">
                         <v-color-picker
+                            style="margin-left:auto;margin-right:auto"
                             dot-size="25"
                             hide-mode-switch
                             hide-inputs
                             v-model="color"
                         ></v-color-picker>
                     </v-col>
-                    <v-col class="pl-2 py-3 pr-5">
+                    <v-col class="pl-2 py-3 pr-5" style="min-width:100px;">
                         <v-row align="center" class="text-center">
                             <v-col class="px-2 py-2 pb-3 neopixel-swatchesonly">
                                 <v-color-picker
+                                    style="margin-left:auto;margin-right:auto"
                                     dot-size="1"
                                     hide-canvas
                                     hide-inputs
@@ -41,7 +43,7 @@
                                 ></v-color-picker>
                             </v-col>
                         </v-row>
-                        <v-row align="center" class="text-center">
+                        <v-row align="center" class="text-center" style="margin-left:auto;margin-right:auto">
                             <v-col class="px-2 py-2">
                                 <v-btn fab x-small color="info" @click="addSwatch()" :disabled="checkSwatch">
                                     <v-icon>mdi-plus</v-icon>
