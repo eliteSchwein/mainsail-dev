@@ -15,6 +15,8 @@ import UpdatePanel from "./UpdatePanel";
 import NeopixelPanel from "./NeopixelPanel";
 import RemotePrintersPanel from "./RemotePrintersPanel";
 import PresetsPanel from "./PresetsPanel";
+import ThemePanel from "./ThemePanel";
+import AccessibilityPanel from "./AccessibilityPanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
@@ -31,6 +33,8 @@ Vue.component('settings-update-panel', UpdatePanel);
 Vue.component('settings-neopixel', NeopixelPanel);
 Vue.component('settings-remote-printers-panel', RemotePrintersPanel);
 Vue.component('settings-presets-panel', PresetsPanel);
+Vue.component('settings-theme-panel', ThemePanel);
+Vue.component('settings-accessibility-panel', AccessibilityPanel);
 
 export default {
 

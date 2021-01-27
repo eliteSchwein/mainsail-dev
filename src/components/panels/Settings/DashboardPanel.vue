@@ -26,11 +26,6 @@
                         <v-switch v-model="boolShowConsoleOnDashboard" label="Console" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
-                <v-row>
-                    <v-col class="py-2">
-                        <v-switch v-model="boolLightMode" label="Light Mode" hide-details class="mt-0"></v-switch>
-                    </v-col>
-                </v-row>
                 <v-row v-if="boolShowScaleSetting">
                     <v-col class="py-2">
                         <v-switch v-if="!remoteMode" v-model="boolShowScaleOnDashboard" label="Scale" hide-details class="mt-0"></v-switch>
@@ -62,19 +57,6 @@
                 },
                 set(status) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { boolWebcam: status } });
-                }
-            },
-            boolLightMode: {
-                get() {
-                    return localStorage.getItem("lightMode")=="enabled";
-                },
-                set(enable) {
-                    if(enable)
-                        localStorage.lightMode="enabled"
-                    else
-                        localStorage.lightMode="disabled"
-                    this.$vuetify.theme.dark = localStorage.lightMode!="enabled";
-                    return localStorage.lightMode=="enabled";
                 }
             },
             boolShowTempchartOnDashboard: {

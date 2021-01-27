@@ -752,10 +752,10 @@
                     this.$store.dispatch("gui/setGcodefilesMetadata", {name: name, value: value});
                 }
             },
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             existsSmallThumbnail(item) {
