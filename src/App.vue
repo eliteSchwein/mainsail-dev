@@ -38,6 +38,7 @@
                     :value="true"
                     >
                     <router-link
+                        style="position: relative;"
                         slot="activator" class="nav-link" exact :to="category.path" @click.prevent
                         v-if="
                             (category.title === 'Webcam' && boolNaviWebcam) ||
@@ -48,12 +49,16 @@
                             )
                         ">
                         <v-icon>mdi-{{ category.icon }}</v-icon>
-                        <v-badge
-                            dot
+                        <v-icon
+                            small
                             color="warning"
-                            style="top: -9px; left: -16px;"
+                            style="
+                                top: 11px;
+                                left: 32px;
+                                position: absolute;
+                            "
                             v-if="category.title === 'Settings' && isUpdateAvailable"
-                        ></v-badge>
+                        >mdi-progress-upload</v-icon>
                         <span class="nav-title">
                             {{ category.title }}
                         </span>
@@ -233,7 +238,6 @@ export default {
         ...mapGetters([
             'getTitle',
             'getVersion',
-            'server/updateManager/isUpdateAvailable',
         ]),
         print_percent: {
             get() {

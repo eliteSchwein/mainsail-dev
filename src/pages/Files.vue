@@ -74,7 +74,21 @@
                     </v-menu>
                 </v-item-group>
             </v-card-title>
-            <v-card-subtitle>Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</v-card-subtitle>
+            <v-card-subtitle>
+                Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}<br />
+                <div v-if="this.disk_usage !== null">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <span v-bind="attrs" v-on="on">Free disk: {{ formatFilesize(disk_usage.free) }}</span>
+                        </template>
+                        <span>
+                            Used: {{ formatFilesize(this.disk_usage.used) }}<br />
+                            Free: {{ formatFilesize(this.disk_usage.free) }}<br />
+                            Total: {{ formatFilesize(this.disk_usage.total) }}
+                        </span>
+                    </v-tooltip>
+                </div>
+            </v-card-subtitle>
             <v-card-text>
                 <v-text-field
                     @click.native="showKeyboard"
@@ -155,6 +169,7 @@
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
+                <v-data-footer>bla bla</v-data-footer>
             </v-data-table>
             <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
                 <div class="textnode">Drop files to add gcode.</div>
@@ -164,6 +179,18 @@
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> Print start
+                </v-list-item>
+                <v-list-item
+                    @click="preheat"
+                    v-if="
+                        'first_layer_extr_temp' in contextMenu.item &&
+                        contextMenu.item.first_layer_extr_temp > 0 &&
+                        'first_layer_bed_temp' in contextMenu.item &&
+                        contextMenu.item.first_layer_bed_temp > 0
+                    "
+                    :disabled="['error', 'printing', 'paused'].includes(printer_state)"
+                    >
+                    <v-icon class="mr-1">mdi-fire</v-icon> Preheat
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
@@ -377,6 +404,7 @@
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
                 loadings: state => state.socket.loadings,
+                printer_state: state => state.printer.print_stats.state,
 
                 displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
@@ -413,6 +441,11 @@
                     return this.$store.dispatch("gui/setSettings", { gcodefiles: { hideMetadataColums: newVal } })
                 }
             },
+            disk_usage: {
+                get: function() {
+                    return this.$store.getters["files/getDiskUsage"](this.currentPath)
+                }
+            }
         },
         created() {
             this.loadPath()
@@ -546,6 +579,26 @@
                 this.contextMenu.item = item
                 this.$nextTick(() => { this.contextMenu.shown = true })
             },
+            preheat() {
+                if (
+                    'first_layer_extr_temp' in this.contextMenu.item &&
+                    'first_layer_bed_temp' in this.contextMenu.item &&
+                    !['error', 'printing', 'paused'].includes(this.printer_state)
+                ) {
+                    let gcode = ""
+                    if (this.contextMenu.item.first_layer_extr_temp > 0) {
+                        gcode = "M104 S"+this.contextMenu.item.first_layer_extr_temp
+                        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                      this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    }
+
+                    if (this.contextMenu.item.first_layer_bed_temp > 0) {
+                        gcode = "M140 S"+this.contextMenu.item.first_layer_bed_temp
+                        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                      this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    }
+                }
+            },
             downloadFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
@@ -645,7 +698,7 @@
                     this.dropzone.visibility = 'hidden';
                     this.dropzone.opacity = 0;
 
-                    if (!this.is_printing && e.dataTransfer.files.length) {
+                    if (e.dataTransfer.files.length) {
                         await this.doUploadFile(e.dataTransfer.files[0]);
                     }
                 }

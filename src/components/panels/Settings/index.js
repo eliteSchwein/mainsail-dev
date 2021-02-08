@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import GeneralPanel from './GeneralPanel'
+import ControlPanel from './ControlPanel'
 import WebcamPanel from './WebcamPanel'
 import ScalePanel from './ScalePanel'
 import DashboardPanel from "./DashboardPanel";
@@ -19,6 +20,7 @@ import ThemePanel from "./ThemePanel";
 import AccessibilityPanel from "./AccessibilityPanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
+Vue.component('settings-control-panel', ControlPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
 Vue.component('settings-scale-panel', ScalePanel);
 Vue.component('settings-dashboard-panel', DashboardPanel);
