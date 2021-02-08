@@ -314,6 +314,9 @@ export default {
             this.keyboardInputvalue = this.keyboardInput.value;
             this.keyboardInputname = this.keyboardInput.labels[0].textContent;
             this.keyboardLayout = keyboardLayouts[this.keyboardInput.dataset.layout];
+            if(this.keyboardInput.dataset.layout=="normal"&&this.virtualKeyboardCompact()){
+                this.keyboardLayout = keyboardLayouts["compact"]
+            }
             if (!this.keyboardVisible)
                 this.keyboardVisible = true
         });
@@ -328,6 +331,9 @@ export default {
         });
     },
     methods: {
+        virtualKeyboardCompact(){
+            return localStorage.compactVirtualKeyboard=="enabled";
+        },
         clickKeyboard(){
             if(this.keyboardInput!=null){
                 this.keyboardInputvalue=this.keyboardInput.value;

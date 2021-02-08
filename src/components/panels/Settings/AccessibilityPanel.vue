@@ -18,6 +18,11 @@
                         <v-switch v-model="toggleVirtualKeyboard" label="Virtual Keyboard" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="toggleCompactKeyboardLayout" label="Compact Layout" hide-details class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-card-text>
         
@@ -46,6 +51,19 @@
                         localStorage.virtualKeyboard = "disabled"
                     bus.$emit("updatekeyboardstatus");
                     return localStorage.virtualKeyboard=="enabled";
+                }
+            },
+            toggleCompactKeyboardLayout: {
+                get() {
+                    return localStorage.compactVirtualKeyboard=="enabled";
+                },
+                set(enable) {
+                    if(enable)
+                        localStorage.compactVirtualKeyboard = "enabled"
+                    else
+                        localStorage.compactVirtualKeyboard = "disabled"
+                    bus.$emit("updatekeyboardstatus");
+                    return localStorage.compactVirtualKeyboard=="enabled";
                 }
             },
         },
