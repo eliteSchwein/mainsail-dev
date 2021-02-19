@@ -35,7 +35,7 @@ For the older Pi's use:
     
 #### Then build mainsail
 
-    $ npm build
+    $ npm run-script build
     
 #### Then Copy Your Mainsail files
 
