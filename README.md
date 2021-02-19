@@ -2,6 +2,45 @@
 Mainsail is a lightweight & responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper)
 3D printer firmware. It communicates with the [Moonraker (Klipper-API)](https://github.com/arksine/moonraker) from [Arksine](https://github.com/arksine). 
 
+## Installation
+
+Firstly make sure you've installed the Vanilla Mainsail: [Tutorial](https://docs.mainsail.xyz/setup/). 
+
+#### Install Git first
+
+    $ sudo apt install git
+
+
+For the ARM V7 Pi's (Pi3 and higher) install Node via:
+
+    $ curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
+    $ sudo bash nodesource_setup.sh
+    $ sudo apt install nodejs
+    
+For the older Pi's use:
+
+    $ wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
+    $ tar -xvf node-v11.15.0-linux-armv6l.tar.gz
+    $ cd node-v11.15.0-linux-armv6l
+    $ sudo cp -R * /usr/local/
+
+#### Next, clone this repository:
+
+    $ git clone https://github.com/eliteSchwein/mainsail.git
+
+#### Then install all node Modules:
+
+    $ cd mainsail
+    $ npm i
+    
+#### Then build mainsail
+
+    $ npm build
+    
+#### Then Copy Your Mainsail files
+
+    $ cp -r dist/* /home/pi/mainsail/
+
 ![screenshot-dashboard](docs/assets/img/screenshot.png)
 
 To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail/setup/) it or read the [pages](https://meteyou.github.io/mainsail/) for more informations.
