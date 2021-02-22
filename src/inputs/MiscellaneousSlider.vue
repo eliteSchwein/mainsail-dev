@@ -30,6 +30,8 @@
 
                         <template v-slot:append>
                             <v-icon @click="increment">mdi-plus</v-icon>
+                            <div style="width:10px"></div>
+                            <v-icon @click="powerOff">mdi-power</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -105,6 +107,10 @@
             },
             increment() {
                 this.value = this.value < 1 ? (this.value + 0.01).toFixed(2) : 100;
+                this.sendCmd();
+            },
+            powerOff(){
+                this.value=0;
                 this.sendCmd();
             }
         },
