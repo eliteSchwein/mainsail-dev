@@ -230,9 +230,6 @@ export default {
     },
     created() {
         this.timerChart = setInterval(() => {
-            this.chartOptions.theme=this.getTheme()
-            this.chartOptions.axisX.gridColor=this.getGridColor()
-            this.chartOptions.axisY.gridColor=this.getGridColor()
             if (
                 this.chart &&
                 this.boolTempchart &&
