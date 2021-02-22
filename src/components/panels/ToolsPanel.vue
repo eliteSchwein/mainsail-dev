@@ -58,7 +58,7 @@
                     <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>Cooldown</v-btn>
                     <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Temperatures">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="secondary" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">

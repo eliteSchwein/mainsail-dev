@@ -10,11 +10,11 @@
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <miscellaneous-panel v-if="klippy_state === 'ready'" class="mt-6"></miscellaneous-panel>
-            <neopixel-panel v-if="this.$store.state.gui.neopixel.stripname!=''" class="mt-6"></neopixel-panel>
-            <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
+            <neopixel-panel v-if="this.$store.state.gui.neopixel.stripname!=''&&klippy_state === 'ready'" class="mt-6"></neopixel-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
+            <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
             <miniconsole-panel class="mt-6" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
         </v-col>
     </v-row>
