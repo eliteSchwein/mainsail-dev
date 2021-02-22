@@ -3,12 +3,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import * as echarts from 'echarts'
 import { convertName } from "@/plugins/helpers";
-
 export default {
     components: {
-
     },
     data: function() {
         return {
@@ -17,7 +16,7 @@ export default {
             timerDataset: '',
             chartFocus: false,
             chartOptions: {
-                darkMode: this.getDarkMode(),
+                darkMode: this.getDarkMode,
                 animation: false,
                 tooltip: {
                     trigger: 'axis',
@@ -94,11 +93,11 @@ export default {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: this.getGridColor(),
+                            color: 'rgba(140, 140, 140, 0.15)',
                         },
                     },
                     axisLabel: {
-                        color: this.getGridColor(),
+                        color: 'rgba(140, 140, 140, 0.75)',
                         margin: 10,
                     },
                 },
@@ -113,16 +112,16 @@ export default {
                         nameLocation: 'end',
                         nameGap: 5,
                         nameTextStyle: {
-                            color: this.getGridColor(),
+                            color: 'rgba(140, 140, 140, 0.75)',
                             align: 'left',
                         },
                         splitLine: {
                             lineStyle: {
-                                color: this.getGridColor(),
+                                color: 'rgba(140, 140, 140, 0.15)',
                             },
                         },
                         axisLabel: {
-                            color: this.getGridColor(),
+                            color: 'rgba(140, 140, 140, 0.75)',
                             formatter: '{value}',
                             rotate: 90,
                             //showMaxLabel: false,
@@ -132,7 +131,7 @@ export default {
                         axisLine: {
                             show: true,
                             lineStyle: {
-                                color: this.getGridColor(),
+                                color: 'rgba(140, 140, 140, 0.15)',
                             },
                         }
                     }, {
@@ -144,14 +143,14 @@ export default {
                         nameLocation: 'end',
                         nameGap: 5,
                         nameTextStyle: {
-                            color: this.getGridColor(),
+                            color: 'rgba(140, 140, 140, 0.75)',
                             align: 'right',
                         },
                         splitLine: {
                             show: false,
                         },
                         axisLabel: {
-                            color: this.getGridColor(),
+                            color: 'rgba(140, 140, 140, 0.75)',
                             formatter: '{value}',
                             showMinLabel: true,
                             rotate: 90,
@@ -160,7 +159,7 @@ export default {
                         axisLine: {
                             show: true,
                             lineStyle: {
-                                color: this.getGridColor(),
+                                color: 'rgba(140, 140, 140, 0.15)',
                             },
                         }
                     },
@@ -206,19 +205,63 @@ export default {
             },
         }
     },
+    computed: {
+        ...mapState({
+            intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
+            intervalDatasetUpdate: state => state.gui.tempchart.intervalDatasetUpdate,
+            boolTempchart: state => state.gui.dashboard.boolTempchart,
+        }),
+        maxHistory: {
+            get() {
+                return this.$store.getters["server/getConfig"]('server', 'temperature_store_size') || 1200
+            }
+        },
+        series: {
+            get () {
+                return this.$store.state.printer.tempHistory.series
+            }
+        },
+        datasets: {
+            get () {
+                return this.$store.state.printer.tempHistory.datasets
+            }
+        },
+        autoscale: {
+            get() {
+                return this.$store.state.gui.tempchart.autoscale
+            }
+        },
+        maxTemp: {
+            get() {
+                return this.$store.getters["printer/getMaxTemp"]
+            }
+        },
+        currentMaxTemp: {
+            get() {
+                return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
+            }
+        },
+        getDarkMode:{
+            get(){
+                return this.$vuetify.theme.dark
+            }
+        },
+        getAxisLabelColor:{
+            get(){
+                if(this.$vuetify.theme.dark){
+                    return 
+                }else{
+                    return ""
+                }
+            }
+        },
+        getAxisGridColor:{
+            get(){
+                return this.$vuetify.theme.dark
+            }
+        }
+    },
     methods: {
-        getDarkMode:function(){
-            if(!this.$vuetify.theme.dark){
-                return false
-            }
-            return true
-        },
-        getGridColor:function(){
-            if(!this.$vuetify.theme.dark){
-                return "#11111130"
-            }
-            return "#ffffff30"
-        },
         createChart() {
             if (document.getElementById("tempchart") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'svg'})
@@ -248,11 +291,9 @@ export default {
                 })
             }
         }, this.intervalChartUpdate)
-
         this.timerDataset = setInterval(() => {
             this.$store.dispatch("printer/tempHistory/updateDatasets")
         }, this.intervalDatasetUpdate)
-
         window.addEventListener('resize', () => {
             if (this.chart) this.chart.resize()
         })
