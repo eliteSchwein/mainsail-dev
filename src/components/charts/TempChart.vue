@@ -245,20 +245,6 @@ export default {
             get(){
                 return this.$vuetify.theme.dark
             }
-        },
-        getAxisLabelColor:{
-            get(){
-                if(this.$vuetify.theme.dark){
-                    return 
-                }else{
-                    return ""
-                }
-            }
-        },
-        getAxisGridColor:{
-            get(){
-                return this.$vuetify.theme.dark
-            }
         }
     },
     methods: {
