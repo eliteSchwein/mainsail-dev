@@ -39,6 +39,9 @@
             </div>
             <v-divider class="mt-0"></v-divider>
             <v-subheader class="pt-2" style="height: auto;">Host Control</v-subheader>
+            <v-list-item class="minheight30" link @click="doReload()">
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Reload</v-list-item-title>
+            </v-list-item>
             <v-list-item class="minheight30" link @click="doHostReboot()">
                 <v-list-item-title><v-icon class="mr-2" small>mdi-power</v-icon>Reboot</v-list-item-title>
             </v-list-item>
@@ -70,6 +73,11 @@ export default {
                 return this.$store.getters["server/power/count"]
             }
         },
+        currentUrl: {
+            get() {
+                return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
+            }
+        },
     },
     methods: {
         changeSwitch(device, value) {
@@ -78,6 +86,10 @@ export default {
         setPower(device, value) {
             let rpc = value === 1 ? "machine.device_power.on" : "machine.device_power.off"
             Vue.prototype.$socket.sendObj(rpc,{ [device.device]: null },"server/power/responseToggle")
+        },
+        doReload: function(){
+            this.showMenu = false
+            window.location.href = this.currentUrl
         },
         doRestart: function() {
             this.showMenu = false
