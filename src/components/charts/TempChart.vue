@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import * as echarts from 'echarts'
 import { convertName } from "@/plugins/helpers";
 
