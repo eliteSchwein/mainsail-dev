@@ -37,6 +37,8 @@
                             label="Chart update interval"
                             v-model="intervalChartUpdate"
                             @blur="blurIntervalChartUpdate"
+                            @click.native="showKeyboard"
+                            data-layout="numeric"
                             type="number"
                             suffix="ms"
                             hide-details="auto"
@@ -51,6 +53,8 @@
                             type="number"
                             v-model="intervalDatasetUpdate"
                             @blur="blurIntervalDatasetUpdate"
+                            @click.native="showKeyboard"
+                            data-layout="numeric"
                             suffix="ms"
                             hide-details="auto"
                             :rules="[
@@ -65,6 +69,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     import { mapState} from 'vuex'
     export default {
         components: {
@@ -135,11 +140,19 @@
         },
         methods: {
             blurIntervalDatasetUpdate() {
+                this.hideKeyboard()
                 if (this.intervalDatasetUpdate < 500) this.intervalDatasetUpdate = 500
             },
             blurIntervalChartUpdate() {
+                this.hideKeyboard()
                 if (this.intervalChartUpdate < 500) this.intervalChartUpdate = 500
             },
+            showKeyboard:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hideKeyboard:function(){
+                bus.$emit("hidekeyboard");
+            }
         }
     }
 </script>
