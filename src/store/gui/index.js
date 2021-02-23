@@ -58,6 +58,8 @@ export function getDefaultState() {
 			position2: '',
 		},
 		webcam: {
+			service: 'mjpegstreamer',
+			targetFps: 25,
 			url: "",
 			rotate: false,
 			rotateDegrees: 90,
