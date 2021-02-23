@@ -17,6 +17,8 @@
                             <v-text-field
                                 label="Speed XY"
                                 v-model="feedrateXY"
+                                @click.native="showKeyboard"
+                                data-layout="normal"
                                 @blur="blurFeedrateXY"
                                 type="number"
                                 suffix="mm/s"
@@ -30,6 +32,8 @@
                             <v-text-field
                                 label="Speed Z"
                                 v-model="feedrateZ"
+                                @click.native="showKeyboard"
+                                data-layout="normal"
                                 @blur="blurFeedrateZ"
                                 type="number"
                                 suffix="mm/s"
@@ -48,6 +52,9 @@
                                 v-model="stepsXY"
                                 hide-selected
                                 hide-details="auto"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
+                                data-layout="normal"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
@@ -67,6 +74,9 @@
                                 v-model="stepsZ"
                                 hide-selected
                                 hide-details="auto"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
+                                data-layout="normal"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
@@ -97,6 +107,9 @@
                                 v-model="feedamountsE"
                                 hide-selected
                                 hide-details="auto"
+                                @click.native="showKeyboard"
+                                @blur="hideKeyboard"
+                                data-layout="normal"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
@@ -116,6 +129,9 @@
                                 v-model="feedratesE"
                                 hide-selected
                                 hide-details="auto"
+                                @click.native="showKeyboard"
+                                data-layout="normal"
+                                @blur="hideKeyboard"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
@@ -135,6 +151,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     export default {
         components: {
 
@@ -211,11 +228,19 @@
         },
         methods: {
             blurFeedrateXY() {
+                this.hideKeyboard()
                 if (!(this.feedrateXY > 0)) this.feedrateXY = 100
             },
             blurFeedrateZ() {
+                this.hideKeyboard()
                 if (!(this.feedrateZ > 0)) this.feedrateZ = 25
-            }
+            },
+            showKeyboard:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hideKeyboard:function(){
+                bus.$emit("hidekeyboard");
+            },
         }
     }
 </script>
