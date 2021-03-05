@@ -1,3 +1,5 @@
+Active development is halted, i will only update when i have time sorry
+
 # Mainsail
 Mainsail is a lightweight & responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper)
 3D printer firmware. It communicates with the [Moonraker (Klipper-API)](https://github.com/arksine/moonraker) from [Arksine](https://github.com/arksine). 
