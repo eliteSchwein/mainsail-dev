@@ -17,10 +17,10 @@ Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.
 
 ## Moonraker Update Config
 
-    $ [update_manager client modded-mainsail]
-    $ type: web
-    $ repo: eliteSchwein/modded-mainsail
-    $ path: ~/modded-mainsail
+    [update_manager client modded-mainsail]
+    type: web
+    repo: eliteSchwein/modded-mainsail
+    path: ~/modded-mainsail
 
 ## Installation
 
