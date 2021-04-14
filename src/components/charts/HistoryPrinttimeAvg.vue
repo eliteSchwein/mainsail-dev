@@ -15,7 +15,6 @@ export default {
         return {
             chart : null,
             chartOptions: {
-                darkMode: true,
                 animation: false,
                 grid: {
                     top: 25,
@@ -33,11 +32,11 @@ export default {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.06)',
+                            color: 'rgba(255, 255, 255, 0.00)',
                         },
                     },
                     axisLabel: {
-                        color: 'rgba(255, 255, 255, 0.24)',
+                        //color: 'rgba(255, 255, 255, 0.24)',
                         margin: 10,
                     },
                 },
@@ -49,16 +48,16 @@ export default {
                     nameLocation: 'end',
                     nameGap: 5,
                     nameTextStyle: {
-                        color: 'rgba(255, 255, 255, 0.24)',
+                        //color: 'rgba(255, 255, 255, 0.24)',
                         align: 'left',
                     },
                     splitLine: {
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.12)',
+                            color: 'rgba(255, 255, 255, 0.0)',
                         },
                     },
                     axisLabel: {
-                        color: 'rgba(255, 255, 255, 0.24)',
+                        //color: 'rgba(255, 255, 255, 0.24)',
                         formatter: '{value}',
                         //rotate: 90,
                         //showMaxLabel: false,
@@ -68,7 +67,7 @@ export default {
                     axisLine: {
                         show: true,
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.12)',
+                            //color: 'rgba(255, 255, 255, 0.12)',
                         },
                     }
                 },

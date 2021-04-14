@@ -1,10 +1,10 @@
 {
-  "name": "mainsail",
-  "version": "1.4.0",
-  "private": true,
+  "name": "mainsail-modded",
+  "version": "0.0.1",
+  "private": false,
   "decription": "a klipper web interface",
   "author": {
-    "name": "Stefan Dej"
+    "name": "eliteSCHW31N"
   },
   "scripts": {
     "serve": "vue-cli-service serve",

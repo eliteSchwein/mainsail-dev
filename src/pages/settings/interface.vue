@@ -3,9 +3,8 @@
         <v-row>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-general-panel></settings-general-panel>
-                <settings-console-panel class="mt-6"></settings-console-panel>
                 <settings-theme-panel class="mt-6"></settings-theme-panel>
-                <settings-control-panel class="mt-6"></settings-control-panel>
+                <settings-console-panel class="mt-6"></settings-console-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-dashboard-panel></settings-dashboard-panel>
@@ -14,7 +13,7 @@
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-neopixel></settings-neopixel>
-                <settings-scale-panel class="mt-6" v-if="!remoteMode"></settings-scale-panel>
+                <settings-control-panel class="mt-6"></settings-control-panel>
             </v-col>
         </v-row>
     </div>

@@ -48,7 +48,8 @@
 		"G-Code 文件": "G-Code 文件",
 		"History": "历史",
 		"Machine": "机器",
-		"Interface": "操作界面"
+		"Interface": "操作界面",
+		"Presets": "预设"
 	},
 	"Editor": {
 		"Minimap": "显示小地图"
@@ -169,6 +170,10 @@
 		"SlicerVersion": "切片版本"
 	},
 	"Panels": {
+		"NeopixelPanel": {
+			"Neopixel": "Neopixel",
+			"Off": "关"
+		},
 		"ControlPanel": {
 			"Controls": "控件",
 			"SetupControls": "更改控件",
@@ -312,10 +317,16 @@
 			"CustomFilter": "自定义筛选器",
 			"Rules": "规则"
 		},
+		"NeopixelPanel": {
+			"Neopixel": "Neopixel",
+			"ConfigName": "配置名称",
+			"ResetSwatches": "重置预设"
+		},
 		"ControlPanel": {
 			"Control": "控制",
 			"SpeedXY": "XY 速度",
 			"SpeedZ": "Z 速度",
+			"EnableCross": "启用交叉运动",
 			"MoveDistancesInMm": "移动距离 mm",
 			"ReverseXMovement": "反转 X 移动",
 			"ReverseYMovement": "反转 Y 移动",

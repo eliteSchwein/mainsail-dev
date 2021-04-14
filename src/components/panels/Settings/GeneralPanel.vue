@@ -29,9 +29,6 @@
               :items="availableLanguages"
               :label="$t('Settings.GeneralPanel.Language')"
               hide-details
-              @click.native="showKeyboard"
-              @blur="hideKeyboard"
-              data-layout="normal"
             ></v-select>
           </v-col>
         </v-row>

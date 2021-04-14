@@ -118,7 +118,7 @@
                   class="mt-0"
                   hide-details
                   v-model="showPrintedFiles"
-                  label="Printed files"
+                  :label="$t('Files.PrintedFiles')"
                 ></v-checkbox>
               </v-list-item>
               <v-divider></v-divider>
@@ -171,7 +171,6 @@
           v-model="search"
           append-icon="mdi-magnify"
           :label="$t('Files.Search')"
-          single-line
           hide-details
         ></v-text-field>
       </v-card-text>
@@ -490,27 +489,17 @@
           $t("Files.NewDirectory")
         }}</v-card-title>
         <v-card-text>
-          <<<<<<< HEAD Please enter a new directory name:
-          <v-text-field
-            @click.native="showKeyboard"
-            @blur="hideKeyboard"
-            data-layout="normal"
-            label="Name"
-            :rules="input_rules"
-            @keypress.enter="createDirectoryAction"
-            required
-            v-model="dialogCreateDirectory.name"
-          ></v-text-field>
-          =======
           {{ $t("Files.PleaseEnterANewDirectoryName") }}
           <v-text-field
             label="Name"
             :rules="input_rules"
             @keypress.enter="createDirectoryAction"
+            @click.native="showKeyboard"
+            @blur="hideKeyboard"
+            data-layout="normal"
             required
             v-model="dialogCreateDirectory.name"
           ></v-text-field>
-          >>>>>>> upstream/master
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -529,24 +518,15 @@
           $t("Files.RenameFile")
         }}</v-card-title>
         <v-card-text>
-          <<<<<<< HEAD
-          <v-text-field
-            @click.native="showKeyboard"
-            @blur="hideKeyboard"
-            data-layout="normal"
-            label="Name"
-            required
-            v-model="dialogRenameFile.newName"
-            ref="inputFieldNewName"
-          ></v-text-field>
-          =======
           <v-text-field
             :label="$t('Files.Name')"
             required
             v-model="dialogRenameFile.newName"
+            @click.native="showKeyboard"
+            @blur="hideKeyboard"
+            data-layout="normal"
             ref="inputFieldNewName"
           ></v-text-field>
-          >>>>>>> upstream/master
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

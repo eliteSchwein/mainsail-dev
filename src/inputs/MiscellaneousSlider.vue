@@ -169,6 +169,11 @@ export default {
       this.sliding = true;
       this.sendCmd();
     },
+    powerOff() {
+      this.value = 0;
+      this.sliding = true;
+      this.sendCmd();
+    },
     increment() {
       this.value = this.value < 1.0 ? (this.value + 0.01).toFixed(2) : 1.0;
       if (this.value < this.off_below) {

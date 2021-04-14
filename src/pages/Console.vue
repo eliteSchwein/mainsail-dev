@@ -1,5 +1,23 @@
 <style>
-.gcode-command-field {
+.theme--dark.gcode-command-field {
+    margin-top: -3px;
+    width: 100%;
+    padding: 10px;
+    padding-left: 15px;
+    /* padding-bottom: 10px; */
+    background-color: #1e1e1e;
+    margin-bottom: 10px;
+    border-radius: .35em;
+}
+.theme--light.gcode-command-field {
+    margin-top: -3px;
+    width: 100%;
+    padding: 10px;
+    padding-left: 15px;
+    /* padding-bottom: 10px; */
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    border-radius: .35em;
 }
 
 .gcode-command-field .v-input__slot {

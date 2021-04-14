@@ -30,7 +30,9 @@
                 <v-spacer></v-spacer>
                 <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ControlPanel.SetupControls')" left>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                        <v-item-group class="v-btn-toggle">
+                            <v-btn small class="px-2 minwidth-0" color="secondary" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                        </v-item-group>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">

@@ -14,7 +14,6 @@ export default {
         return {
             chart : null,
             chartOptions: {
-                darkMode: true,
                 animation: false,
                 grid: {
                     top: 10,
@@ -34,9 +33,9 @@ export default {
                     radius: ['35%', '60%'],
                     emphasis: {
                         itemStyle: {
-                            shadowBlur: 10,
+                            shadowBlur: 0,
                             shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            shadowColor: 'rgba(0, 0, 0, 0.0)'
                         }
                     }
                 }]

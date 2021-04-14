@@ -49,7 +49,8 @@
 		"G-Code Files": "GCode Fájlok",
 		"History": "Előzmények",
 		"Machine": "Gép",
-		"Interface": "Interfész"
+		"Interface": "Interfész",
+		"Presets": "Előbeállítások"
 	},
 	"Editor": {
 		"Minimap": "Mutasd a kistérképet"
@@ -168,6 +169,10 @@
 		"SlicerVersion": "Slicer Verziója"
 	},
 	"Panels": {
+		"NeopixelPanel": {
+			"Neopixel": "Neopixel",
+			"Off": "Off"
+		},
 		"ControlPanel": {
 			"Controls": "Vezérlések",
 			"SetupControls": "Beállítás vezérlései",
@@ -311,10 +316,16 @@
 			"CustomFilters": "Egyedi szűrők",
 			"Rules": "Szabályok"
 		},
+		"NeopixelPanel": {
+			"Neopixel": "Neopixel",
+			"ConfigName": "Konfiguráció neve",
+			"ResetSwatches": "Előbeállítások visszaállítása"
+		},
 		"ControlPanel": {
 			"Control": "Vezérlés",
 			"SpeedXY": "XY sebessége",
 			"SpeedZ": "Z sebessége",
+      		"EnableCross": "Keresztmozgás engedélyezése",
 			"MoveDistancesInMm": "Mozgások mm-ben",
 			"ReverseXMovement": "X mozgása fordítva",
 			"ReverseYMovement": "Y mozgása fordítva",

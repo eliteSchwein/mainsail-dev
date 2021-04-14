@@ -32,7 +32,6 @@
       ></neopixel-panel>
     </v-col>
     <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
-      <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
       <tools-panel v-if="displayToolsPanel"></tools-panel>
       <miniconsole-panel
         :class="displayToolsPanel ? 'mt-6' : ''"
@@ -57,7 +56,6 @@ export default {
       moonrakerFailedComponents: (state) => state.server.failed_components,
 
       showDashboardWebcam: (state) => state.gui.dashboard.boolWebcam,
-      showDashboardScale: (state) => state.gui.dashboard.boolScale,
       showDashboardConsole: (state) => state.gui.dashboard.boolConsole,
       config: (state) => state.printer.configfile.config,
     }),

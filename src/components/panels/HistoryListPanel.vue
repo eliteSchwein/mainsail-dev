@@ -23,7 +23,9 @@
                     v-model="search"
                     append-icon="mdi-magnify"
                     :label="$t('History.Search')"
-                    single-line
+                    @click.native="showKeyboard"
+                    @blur="hideKeyboard"
+                    data-layout="normal"
                     hide-details
                 ></v-text-field>
             </v-card-text>
@@ -231,6 +233,7 @@
 </template>
 
 <script>
+import { bus } from "@/main";
 import {mapGetters, mapState} from 'vuex'
 import VueLoadImage from 'vue-load-image'
 
@@ -329,6 +332,12 @@ import VueLoadImage from 'vue-load-image'
             })
         },
         methods: {
+            showKeyboard: function (e) {
+                bus.$emit("showkeyboard", e);
+            },
+            hideKeyboard: function () {
+                bus.$emit("hidekeyboard");
+            },
             refreshHistory: function() {
                 this.$socket.sendObj('server.history.list', {}, 'server/history/getHistory')
             },

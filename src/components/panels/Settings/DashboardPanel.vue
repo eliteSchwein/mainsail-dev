@@ -26,11 +26,6 @@
                         <v-switch v-model="boolShowConsoleOnDashboard" :label="$t('Settings.DashboardPanel.Console')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
-                <v-row v-if="boolShowScaleSetting">
-                    <v-col class="py-2">
-                        <v-switch v-if="!remoteMode" v-model="boolShowScaleOnDashboard" label="Scale" hide-details class="mt-0"></v-switch>
-                    </v-col>
-                </v-row>
                 <v-row class="mt-2">
                     <v-col col-6>
                         <v-text-field
@@ -122,19 +117,6 @@
                 },
                 set(newVal) {
                     if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { tempchart: { intervalDatasetUpdate: newVal } })
-                }
-            },
-            boolShowScaleOnDashboard: {
-                get() {
-                    return this.$store.state.gui.dashboard.boolScale;
-                },
-                set(status) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolScale: status } });
-                }
-            },
-            boolShowScaleSetting: {
-                get() {
-                    return this.$store.state.gui.dashboard.boolScaleAvailable;
                 }
             },
         },

@@ -5,7 +5,7 @@
 </style>
 
 <template>
-  <v-card v-observe-visibility="visibilityChanged">
+  <v-card>
     <v-toolbar flat dense>
       <v-toolbar-title>
         <span class="subheading">

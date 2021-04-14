@@ -260,6 +260,7 @@
 </template>
 
 <script>
+import { bus } from "../../../main";
 import VueLoadImage from "vue-load-image";
 
 export default {

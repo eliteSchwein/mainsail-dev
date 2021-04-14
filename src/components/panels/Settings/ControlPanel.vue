@@ -23,7 +23,7 @@
                 :label="$t('Settings.ControlPanel.SpeedXY')"
                 v-model="feedrateXY"
                 @click.native="showKeyboard"
-                data-layout="normal"
+                data-layout="number"
                 @blur="blurFeedrateXY"
                 type="number"
                 suffix="mm/s"
@@ -36,7 +36,7 @@
                 :label="$t('Settings.ControlPanel.SpeedZ')"
                 v-model="feedrateZ"
                 @click.native="showKeyboard"
-                data-layout="normal"
+                data-layout="number"
                 @blur="blurFeedrateZ"
                 type="number"
                 suffix="mm/s"
@@ -64,9 +64,6 @@
                   v-model="stepsAll"
                   hide-selected
                   hide-details="auto"
-                  @click.native="showKeyboard"
-                  @blur="hideKeyboard"
-                  data-layout="normal"
                   multiple
                   small-chips
                   :deletable-chips="true"
@@ -175,9 +172,6 @@
                 v-model="feedamountsE"
                 hide-selected
                 hide-details="auto"
-                @click.native="showKeyboard"
-                @blur="hideKeyboard"
-                data-layout="normal"
                 multiple
                 small-chips
                 :deletable-chips="true"
@@ -199,9 +193,6 @@
                 v-model="feedratesE"
                 hide-selected
                 hide-details="auto"
-                @click.native="showKeyboard"
-                data-layout="normal"
-                @blur="hideKeyboard"
                 multiple
                 small-chips
                 :deletable-chips="true"
