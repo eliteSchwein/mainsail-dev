@@ -28,7 +28,7 @@ Firstly make sure you've installed the Vanilla Mainsail: Tutorial.
 
 #### Run install script
 
-    $ bash <(curl -s https://raw.githubusercontent.com/eliteSchwein/modded-mainsail/master/scripts/install.sh)
+    $ bash <(curl -s https://raw.githubusercontent.com/eliteSchwein/modded-mainsail/master/scripts/install.sh?$RANDOM)
 
     This will install modded mainsail on Port 800, to configure the correct ports please edit the nginx config via
 
