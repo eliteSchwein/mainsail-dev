@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import { findDirectory } from "@/plugins/helpers"
-import store from "@/store";
-import axios from "axios";
 
 export default {
 	reset(state) {
@@ -22,7 +20,9 @@ export default {
 			for (const [key, item] of Object.entries(parent)) {
 				if (
 					item.isDirectory &&
+					'filename' in item &&
 					'dirs' in payload &&
+					payload.dirs !== undefined &&
 					payload.dirs.length > 0 &&
 					payload.dirs.findIndex(element => element.dirname === item.filename) < 0
 				) parent.splice(key, 1)
@@ -47,31 +47,27 @@ export default {
 
 		if (payload.files && payload.files.length) {
 			for (let file of payload.files) {
-				if (!parent.find(element => (element.isDirectory === false && element.filename === file.filename))) {
+				const existingFile = parent.find(element => (element.isDirectory === false && element.filename === file.filename))
+
+				if (
+					existingFile && (
+						existingFile.size !== file.size ||
+						existingFile.modified.getTime() !== new Date(file.modified*1000).getTime()
+					)
+				) {
+					Vue.set(existingFile, 'modified', new Date(file.modified*1000))
+					Vue.set(existingFile, 'size', file.size)
+
+					if (existingFile.metadataPulled) {
+						Vue.prototype.$socket.sendObj("server.files.metadata", { filename: payload.requestParams.path+'/'+file.filename }, "files/getMetadata")
+					}
+				} else if (!existingFile) {
 					parent.push({
 						isDirectory: false,
 						filename: file.filename,
 						modified: new Date(file.modified * 1000),
 						size: parseInt(file.size),
 						metadataPulled: false,
-					})
-				}
-
-				if (file.filename === ".mainsail.json" && payload.requestParams.path === "config") {
-					fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
-						.then(res => res.json()).then(file => {
-						this.commit('gui/setData', file, { root: true })
-						if (!store.state.socket.remoteMode) this.dispatch('farm/readStoredPrinters', {}, { root: true })
-					})
-				}
-
-				if (file.filename === "gui.json" && payload.requestParams.path === "config") {
-					fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/gui.json?time='+Date.now())
-						.then(res => res.json()).then(file => {
-						this.commit('gui/setData', file, { root: true })
-						this.dispatch('gui/upload', {}, { root: true })
-
-						axios.delete('//'+ store.state.socket.hostname+':'+store.state.socket.port +'/server/files/config/gui.json');
 					})
 				}
 			}
@@ -118,7 +114,7 @@ export default {
 		let parent = findDirectory(state.filetree, (payload.item.root+"/"+path).split("/"));
 
 		if (parent) {
-			if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) < 0) {
+			if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) === -1) {
 				let modified = new Date(payload.item.modified * 1000);
 
 				parent.push({
@@ -128,7 +124,7 @@ export default {
 					size: payload.item.size,
 					metadataPulled: false,
 				});
-			}
+			} else Vue.prototype.$socket.sendObj("server.files.metadata", { filename: payload.item.path }, "files/getMetadata")
 		}
 	},
 
@@ -182,4 +178,12 @@ export default {
 
 		if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
 	},
+
+	setDiskUsage(state, payload) {
+		let path = payload.path
+		if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
+
+		const dir = state.filetree.find(dir => dir.filename === path)
+		if (dir && 'disk_usage' in dir) Vue.set(dir, "disk_usage", payload.disk_usage)
+	}
 }

@@ -77,24 +77,19 @@ export default {
 
 	getImage: state => {
 		if (
-			'gui' in state.data &&
-			'webcam' in state.data.gui.webcam &&
-			'url' in state.data.gui.webcam &&
-			state.data.gui.webcam.url !== "" &&
-			'bool' in state.data.gui.webcam &&
-			state.data.gui.webcam.bool &&
-			'dashbaord' in state.data.gui &&
-			'boolWebcam' in state.data.gui.dashboard &&
-			state.data.gui.dashboard.boolWebcam
-		) {
-			return state.data.gui.webcam.url
-		} else if (
 			state.current_file &&
+			"filename" in state.current_file &&
 			"thumbnails" in state.current_file &&
-			state.current_file.thumbnails.find((element) => element.width === 400 && element.height === 300)
+			state.current_file.thumbnails.length
 		) {
-			return 'data:image/gif;base64,'+state.current_file.thumbnails.find((element) => element.width === 400 && element.height === 300).data
-		} else return "/img/sidebar-background.png"
+			const indexLastDir = state.current_file.filename.lastIndexOf('/')
+			const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir)+"/" : ""
+			const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+			if (thumbnail && 'relative_path' in thumbnail) return "//"+state.socket.hostname+":"+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
+		}
+
+		return "/img/sidebar-background.png"
 	},
 
 	getLogo: state => {
@@ -247,4 +242,14 @@ export default {
 
 		return 0
 	},
+
+	getPrinterWebcams: (state) => {
+		if (
+			'gui' in state.data &&
+			'webcam' in state.data.gui &&
+			'configs' in state.data.gui.webcam
+		) return state.data.gui.webcam.configs
+
+		return []
+	}
 }

@@ -1,47 +1,38 @@
 <style>
-    .tool-input {
-        min-width: 5rem;
-        margin-top: 0;
-        padding: 0;
-    }
-
-    .tool-input .v-input__slot { margin-bottom: 0; }
-    .tool-input .v-text-field__details { display: none; }
-
-    .tool-input input {
-        -moz-appearance: textfield;
-    }
-    .tool-input input::-webkit-outer-spin-button,
-    .tool-input input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+    .tool-input .v-select__slot label{
+        display:none!important;
     }
 </style>
 
 <template>
-    <v-text-field 
+    <v-combobox
+        :label="convertName(this.name)"
+        dense
         hide-details
-        label="Tool Temp"
         @click.native="showKeyboard"
         @blur="hideKeyboard"
         data-layout="numeric" 
-        type="number" 
-        min="0" 
-        :max="max_temp" 
-        step="any" 
-        ref="toolField" 
-        v-model="value" 
-        class="tool-input" 
-        @change="setTemps" 
         onClick="this.select();"
-    >
-    </v-text-field>
+        v-model="value"
+        class="tool-input"
+        :items="items"
+        item-text="value"
+        type="number"
+        @change="setTemps"
+    ></v-combobox>
 </template>
 
 
+
 <script>
+    import {convertName} from "@/plugins/helpers"
     import {bus} from "../main";
     import Vue from "vue";
+
+    /*
+<v-text-field v-if="false" type="number" min="0" :max="max_temp" step="any" ref="toolField"  class="tool-input">
+</v-text-field>
+*/
 
     export default {
         data: function() {
@@ -56,12 +47,15 @@
             max_temp: Number,
             command: String,
             attributeName: String,
+            items: Array,
         },
         computed: {
 
         },
         methods: {
+            convertName: convertName,
             setTemps() {
+                if (typeof this.value === 'object' && this.value !== null) this.value = this.value.value
                 if (parseFloat(this.value) === 0) this.value = 0
                 
                 if (this.max_temp !== undefined && this.value > this.max_temp) {

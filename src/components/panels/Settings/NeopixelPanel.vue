@@ -8,7 +8,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-led-off</v-icon>Neopixel</span>
+                <span class="subheading"><v-icon left>mdi-led-off</v-icon>{{$t('Settings.NeopixelPanel.Neopixel')}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -17,7 +17,7 @@
                     <v-text-field
                         v-model="stripname"
                         hide-details
-                        label="Config Name"
+                        :label="$t('Settings.NeopixelPanel.ConfigName')"
                         @click.native="show"
                         @blur="hide"
                         data-layout="normal" 
@@ -26,8 +26,8 @@
             </v-row>
             <v-row>
                 <v-col class="py-0 py-3">
-                    <v-btn color="red darken-1" @click="resetSwatches()">
-                        <v-icon class="mr-3">mdi-reload</v-icon>Reset Swatches
+                    <v-btn color="red darken-1"  @click="resetSwatches()">
+                        <v-icon class="mr-3">mdi-reload</v-icon>{{$t('Settings.NeopixelPanel.ResetSwatches')}}
                     </v-btn>
                 </v-col>
             </v-row>              

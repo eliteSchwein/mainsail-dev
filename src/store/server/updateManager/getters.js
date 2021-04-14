@@ -1,5 +1,6 @@
-export default {
+import semver from "semver"
 
+export default {
 	getUpdateableSoftwares(state) {
 		const output = {}
 		const sortKeys = Object.keys(state.version_info).sort((a,b) => {
@@ -23,13 +24,14 @@ export default {
 	},
 
 	isUpdateAvailable(state) {
-		if (
-			'klipper' in state &&
-			'remote_hash' in state.klipper &&
-			'current_hash' in state.klipper &&
-			state.klipper.current_hash !== state.klipper.current_hash
-		) {
-			return true
+		for (const key of Object.keys(state.version_info)) {
+			if (
+				'version' in state.version_info[key] &&
+				'remote_version' in state.version_info[key] &&
+				semver.valid(state.version_info[key].version) &&
+				semver.valid(state.version_info[key].remote_version) &&
+				semver.gt(state.version_info[key].remote_version, state.version_info[key].version)
+			) return true
 		}
 
 		return false

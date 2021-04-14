@@ -16,14 +16,14 @@ export default {
 		}
 
 		this.dispatch('socket/clearLoadings', null, { root: true })
-		if (this.state.server.plugins.includes("update_manager"))
+		if (this.state.server.components.includes("update_manager"))
 			Vue.prototype.$socket.sendObj('machine.update.status', { refresh: false }, 'server/updateManager/getStatus')
 	},
 
 	setData(state, payload) {
 		if ("status" in payload) payload = payload.status;
 		if ("requestParams" in payload) delete payload.requestParams
-		let now = Date.now();
+		//let now = Date.now();
 
 		Object.entries(payload).forEach(([key, value]) => {
 			if (key === "webhooks") {
@@ -36,31 +36,6 @@ export default {
 						...value
 					})
 				} else Vue.set(state, key, value)
-
-				//update heaters
-				if (
-					Array.isArray(state.heaters.available_heaters) &&
-					state.heaters.available_heaters.length
-				) {
-					let keySplit = key.split(" ")
-
-					if (
-						state.heaters.available_heaters.includes(key) ||
-						keySplit[0] === "temperature_fan" ||
-						keySplit[0] === "temperature_sensor") {
-
-						let name = keySplit[0]
-						if (keySplit[0] === "temperature_fan") name = keySplit[1]
-						else if (keySplit[0] === "temperature_sensor") name = keySplit[1]
-						else if (keySplit[0] === "heater_generic") name = keySplit[1]
-
-						if (value.temperature) this.commit('printer/tempHistory/addValue', { name: name, value: value.temperature, time: now })
-						else if (key in state && 'temperature' in state[key]) this.commit('printer/tempHistory/addValue', { name: name, value:  state[key].temperature, time: now })
-
-						if (value.target) this.commit('printer/tempHistory/addValue', { name: name+'_target', value: value.target, time: now })
-						else if (key in state && 'target' in state[key]) this.commit('printer/tempHistory/addValue', { name: name+'_target', value:  state[key].target, time: now })
-					}
-				}
 			}
 		})
 	},

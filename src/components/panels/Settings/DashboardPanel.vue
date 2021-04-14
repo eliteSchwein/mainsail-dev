@@ -6,29 +6,56 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Dashboard</span>
+                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>{{ $t('Settings.DashboardPanel.Dashboard') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolShowWebcamOnDashboard" label="Webcam" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolShowWebcamOnDashboard" :label="$t('Settings.DashboardPanel.Webcam')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolShowTempchartOnDashboard" label="Tempchart" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolShowTempchartOnDashboard" :label="$t('Settings.DashboardPanel.Tempchart')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolShowConsoleOnDashboard" label="Console" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolShowConsoleOnDashboard" :label="$t('Settings.DashboardPanel.Console')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
-                <v-row v-if="boolShowScaleSetting">
-                    <v-col class="py-2">
-                        <v-switch v-if="!remoteMode" v-model="boolShowScaleOnDashboard" label="Scale" hide-details class="mt-0"></v-switch>
+                <v-row class="mt-2">
+                    <v-col col-6>
+                        <v-text-field
+                            :label="$t('Settings.DashboardPanel.ChartUpdateInterval')"
+                            v-model="intervalChartUpdate"
+                            @blur="blurIntervalChartUpdate"
+                            @click.native="showKeyboard"
+                            data-layout="numeric"
+                            type="number"
+                            suffix="ms"
+                            hide-details="auto"
+                            :rules="[
+                                    v => v >= 500 || 'Minimum is 500ms'
+                                ]"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col col-6>
+                        <v-text-field
+                            :label="$t('Settings.DashboardPanel.DatapointInterval')"
+                            type="number"
+                            v-model="intervalDatasetUpdate"
+                            @blur="blurIntervalDatasetUpdate"
+                            @click.native="showKeyboard"
+                            data-layout="numeric"
+                            suffix="ms"
+                            hide-details="auto"
+                            :rules="[
+                                    v => v >= 500 || 'Minimum is 500ms'
+                                ]"
+                        ></v-text-field>
                     </v-col>
                 </v-row>
             </v-container>
@@ -37,6 +64,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     import { mapState} from 'vuex'
     export default {
         components: {
@@ -64,7 +92,7 @@
                     return this.$store.state.gui.dashboard.boolTempchart;
                 },
                 set(status) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolTempchart: status } });
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolTempchart: status } })
                 }
             },
             boolShowConsoleOnDashboard: {
@@ -72,25 +100,41 @@
                     return this.$store.state.gui.dashboard.boolConsole;
                 },
                 set(status) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolConsole: status } });
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolConsole: status } })
                 }
             },
-            boolShowScaleOnDashboard: {
+            intervalChartUpdate: {
                 get() {
-                    return this.$store.state.gui.dashboard.boolScale;
+                    return this.$store.state.gui.tempchart.intervalChartUpdate
                 },
-                set(status) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolScale: status } });
+                set(newVal) {
+                    if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { tempchart: { intervalChartUpdate: newVal } })
                 }
             },
-            boolShowScaleSetting: {
+            intervalDatasetUpdate: {
                 get() {
-                    return this.$store.state.gui.dashboard.boolScaleAvailable;
+                    return this.$store.state.gui.tempchart.intervalDatasetUpdate
+                },
+                set(newVal) {
+                    if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { tempchart: { intervalDatasetUpdate: newVal } })
                 }
             },
         },
         methods: {
-
+            blurIntervalDatasetUpdate() {
+                this.hideKeyboard()
+                if (this.intervalDatasetUpdate < 500) this.intervalDatasetUpdate = 500
+            },
+            blurIntervalChartUpdate() {
+                this.hideKeyboard()
+                if (this.intervalChartUpdate < 500) this.intervalChartUpdate = 500
+            },
+            showKeyboard:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hideKeyboard:function(){
+                bus.$emit("hidekeyboard");
+            }
         }
     }
 </script>

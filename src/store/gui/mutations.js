@@ -9,16 +9,17 @@ export default {
 	},
 
 	setData(state, payload) {
-		if ("state" in payload) payload = payload.state
-		if ("gui" in payload) payload = payload.gui
+		let setDataDeep = function(currentState, payload) {
+			Object.entries(payload).forEach(([key, value]) => {
+				if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
+					setDataDeep(currentState[key], value)
+				} else if (key in currentState) {
+					Vue.set(currentState, key, value)
+				}
+			})
+		}
 
-		Object.entries(payload).forEach(([key, value]) => {
-			if (typeof value === 'object') {
-				Object.entries(value).forEach(([key2, value2]) => {
-					Vue.set(state[key], key2, value2)
-				})
-			} else Vue.set(state, key, value)
-		})
+		setDataDeep(state, payload)
 	},
 
 	// override special setting
@@ -65,5 +66,74 @@ export default {
 		if (state.presets[payload.index]) {
 			state.presets.splice(payload.index, 1)
 		}
-	}
+	},
+
+	addWebcam(state, payload) {
+		const newWebcam = {
+			name: payload.name,
+			icon: payload.icon,
+			service: payload.service,
+			targetFps: payload.targetFps,
+			url: payload.url,
+			flipX: payload.flipX,
+			flipY: payload.flipY,
+		}
+
+		state.webcam.configs.push(newWebcam)
+	},
+
+	updateWebcam(state, payload) {
+		if (state.webcam.configs[payload.index]) {
+			const configs = {...state.webcam.configs}
+			configs[payload.index] = {
+				name: payload.name,
+				icon: payload.icon,
+				service: payload.service,
+				targetFps: payload.targetFps,
+				url: payload.url,
+				flipX: payload.flipX,
+				flipY: payload.flipY,
+			}
+
+			Vue.set(state.webcam, 'configs', configs)
+		}
+	},
+
+	deleteWebcam(state, payload) {
+		if (state.webcam.configs[payload.index]) {
+			state.webcam.configs.splice(payload.index, 1)
+		}
+	},
+
+	setTempchartDatasetSettings(state, payload) {
+		Vue.set(state.tempchart, 'datasetSettings', payload)
+	},
+
+	setTempchartDatasetSetting(state, payload) {
+		if (!(payload.name in state.tempchart.datasetSettings))
+			Vue.set(state.tempchart.datasetSettings, payload.name, {})
+
+		Vue.set(state.tempchart.datasetSettings[payload.name], payload.type, payload.value)
+	},
+
+	setTempchartDatasetAdditionalSensorSetting(state, payload) {
+		if (!(payload.name in state.tempchart.datasetSettings))
+			Vue.set(state.tempchart.datasetSettings, payload.name, {})
+
+		if (!('additionalSensors' in state.tempchart.datasetSettings[payload.name]))
+			Vue.set(state.tempchart.datasetSettings[payload.name], 'additionalSensors', {})
+
+		if (!(payload.sensor in state.tempchart.datasetSettings[payload.name]['additionalSensors']))
+			Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'], payload.sensor, {})
+
+		Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'][payload.sensor], 'boolList', payload.value)
+	},
+
+	setHistoryColumns(state, data) {
+		if (data.value && state.history.hideColums.includes(data.name)) {
+			state.history.hideColums.splice(state.history.hideColums.indexOf(data.name), 1)
+		} else if (!data.value && !state.history.hideColums.includes(data.name)) {
+			state.history.hideColums.push(data.name)
+		}
+	},
 }

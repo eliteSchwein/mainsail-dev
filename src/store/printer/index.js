@@ -51,6 +51,7 @@ export function getDefaultState() {
 
 		},
 		gcode_move: {
+			position: [],
 			extrude_factor: 1,
 			speed_factor: 1,
 			homing_origin: [0,0,0,0],
@@ -61,6 +62,11 @@ export function getDefaultState() {
 		endstops: {},
 		configfile: {
 			config: {
+				printer: {
+
+				}
+			},
+			settings: {
 				printer: {
 
 				}

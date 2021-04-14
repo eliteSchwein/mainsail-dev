@@ -1,64 +1,81 @@
 Active development is halted, i will only update when i have time sorry
 
 # Mainsail
-Mainsail is a lightweight & responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper)
-3D printer firmware. It communicates with the [Moonraker (Klipper-API)](https://github.com/arksine/moonraker) from [Arksine](https://github.com/arksine). 
+
+Mainsail a lightweight & responsive web interface for [Klipper](https://github.com/KevinOConnor/klipper), the 3D printer firmware. It communicates with [Moonraker (Klipper-API)](https://github.com/arksine/moonraker) from [Arksine](https://github.com/arksine).
+
+[Getting Started](https://docs.mainsail.xyz/setup)
+
+Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.mainsail.xyz). Find out [more](https://docs.mainsail.xyz/setup#mymainsailxyz).
+
+[Documentation](https://docs.mainsail.xyz)  
+[Release Notes](https://github.com/meteyou/mainsail/releases)
+
+## Screenshots
+
+![screenshot-dashboard](docs/assets/img/screenshot.png)
+
+## Moonraker Update Config
+
+[update_manager client modded-mainsail]
+type: web
+repo: eliteSchwein/modded-mainsail
+path: ~/modded-mainsail
 
 ## Installation
 
-Firstly make sure you've installed the Vanilla Mainsail: [Tutorial](https://docs.mainsail.xyz/setup/). 
+Firstly make sure you've installed the Vanilla Mainsail: [Tutorial](https://docs.mainsail.xyz/setup/).
 
 #### Install Git first
 
     $ sudo apt install git
 
-
-For the ARM V7 Pi's (Pi3 and higher) install Node via:
-
-    $ curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-    $ sudo bash nodesource_setup.sh
-    $ sudo apt install nodejs
-    
-For the older Pi's use:
-
-    $ wget https://nodejs.org/download/release/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
-    $ tar -xvf node-v11.15.0-linux-armv6l.tar.gz
-    $ cd node-v11.15.0-linux-armv6l
-    $ sudo cp -R * /usr/local/
-
 #### Next, clone this repository:
 
-    $ git clone https://github.com/eliteSchwein/mainsail.git
+    $ git clone https://github.com/eliteSchwein/modded-mainsail.git
 
-#### Then install all node Modules:
+#### Then run install script
 
-    $ cd mainsail
-    $ npm i
-    
-#### Then build mainsail
+    This will replace the current mainsail config
 
-    $ npm run-script build
-    
-#### Then Copy Your Mainsail files
+    $ bash cd modded-mainsail
+    $ bash scripts/install.sh
 
-    $ cp -r dist/* /home/pi/mainsail/
+## Features
 
-![screenshot-dashboard](docs/assets/img/screenshot.png)
+- Optimized for desktops, tablets and mobile devices
+- Supports multiple 3D printers (Printer Farm)
+- File Manager (gcode and config files)
+- Config Editor
+- Temperature Presets (with custom gcode)
+- Bed Mesh Leveling
+- Webcam support
+- Control power devices (relays, TPLink, Tasmota, ..)
+- Customizable UI (logos, backgrounds & even custom css)
 
-To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail/setup/) it or read the [pages](https://meteyou.github.io/mainsail/) for more informations.
+## Get support & assistance
 
-For support join our discord server -> [https://discord.gg/skWTwTD](https://discord.gg/skWTwTD)
+Do you need help or just want to talk? Join us on [Discord](https://discord.gg/skWTwTD). We have a very active community.  
+Have you found a bug? Then we would like you to create an [issue](https://github.com/meteyou/mainsail/issues).
+
+## Support this project
+
+The project is primarily developed and maintained by meteyou. To keep the project going he invests his free time, almost every day. To motivate him (☕🍺😜) there are several ways to support the project.
+
+- [Patreon (recurring)](https://patreon.com/meteyou)
+- [Ko-Fi (one-time)](https://ko-fi.com/mainsail)
 
 ## Credit, sources and inspiration
-* [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
-* [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mainsail would not be possible.
-* [lixxbox](https://github.com/lixxbox) for the Mainsail logo & Docs
-* [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
-* [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
-* [Flaticon](https://www.flaticon.com): for the Logo and Ressource Manager Icons
-* [Meteyou](https://github.com/meteyou/mainsail): for the original Mainsail
-* [dangire158](https://github.com/dangrie158/hx711-driver): for the hx711 Driver
-* [eliteSCHW31N](https://github.com/eliteSchwein/hx711server): for the hx711 Server
-* [WallpaperCraft](https://wallpaperscraft.com/): for the main Background
+
+- [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
+- [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mainsail would not be possible.
+- [lixxbox](https://github.com/lixxbox) for the Mainsail logo & Docs
+- [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
+- [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
+- [Flaticon](https://www.flaticon.com): for the Logo and Ressource Manager Icons
+- [Meteyou](https://github.com/meteyou/mainsail): for the original Mainsail
+- [dangire158](https://github.com/dangrie158/hx711-driver): for the hx711 Driver
+- [eliteSCHW31N](https://github.com/eliteSchwein/hx711server): for the hx711 Server
+- [WallpaperCraft](https://wallpaperscraft.com/): for the main Background
 
 Massive thanks to the whole [Voron Design](http://vorondesign.com/) community. Without them such a project would not be possible.

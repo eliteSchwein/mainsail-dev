@@ -1,4 +1,5 @@
 import { caseInsensitiveNameSort } from '@/plugins/helpers'
+import { additionalSensors } from '@/store/variables'
 
 export default {
 
@@ -45,7 +46,7 @@ export default {
 		return array.sort(caseInsensitiveNameSort);
 	},
 
-	getHeaters: (state, getters) => {
+	getHeaters: (state, getters, rootState, rootGetters) => {
 		let heaters = []
 		let colorOff = "grey darken-2"
 		let colorHot = "grey lighten-5"
@@ -77,8 +78,15 @@ export default {
 						color: color,
 						target: value.target,
 						temperature: value.temperature,
+						additionValues: getters.getAdditionSensors(nameSplit[1]),
+						tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 						power: 'power' in value ? value.power : null,
+						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
+						chartTemperature: getters["tempHistory/getSeries"](name),
+						chartTarget: getters["tempHistory/getSeries"](name+"_target"),
+						chartPower: getters["tempHistory/getSeries"](name+'_power'),
+						chartSpeed: getters["tempHistory/getSeries"](name+'_speed'),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -89,7 +97,7 @@ export default {
 		return heaters.sort(caseInsensitiveNameSort);
 	},
 
-	getTemperatureFans: (state, getters) => {
+	getTemperatureFans: (state, getters, rootState, rootGetters) => {
 		let fans = []
 
 		for (let [key, value] of Object.entries(state)) {
@@ -100,8 +108,16 @@ export default {
 					name: nameSplit[1],
 					target: value.target,
 					temperature: value.temperature,
+					additionValues: getters.getAdditionSensors(nameSplit[1]),
+					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					speed: value.speed,
+					rpm: 'rpm' in value ? value.rpm : false,
+					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
+					chartTarget: getters["tempHistory/getSeries"](nameSplit[1]+"_target"),
+					chartPower: getters["tempHistory/getSeries"](nameSplit[1]+'_power'),
+					chartSpeed: getters["tempHistory/getSeries"](nameSplit[1]+'_speed'),
 				})
 			}
 		}
@@ -124,15 +140,20 @@ export default {
 				if (value.temperature <= min_temp + split) icon = "mdi-thermometer-low"
 				if (value.temperature >= max_temp - split) icon = "mdi-thermometer-high"
 
+
+
 				sensors.push({
 					name: nameSplit[1],
 					temperature: value.temperature,
+					additionValues: getters.getAdditionSensors(nameSplit[1]),
+					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					icon: icon,
 					min_temp: min_temp,
 					max_temp: max_temp,
 					measured_min_temp: value.measured_min_temp,
 					measured_max_temp: value.measured_max_temp,
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
 				})
 			}
 		}
@@ -211,6 +232,7 @@ export default {
 				if (!name.startsWith("_")) {
 					let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
 					let power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
+					let rpm = 'rpm' in value ? value.rpm : false
 					let pwm = controllable
 					let scale = 1
 
@@ -219,31 +241,36 @@ export default {
 					if (nameSplit[0].toLowerCase() === "output_pin") {
 						controllable = true
 						pwm = false
-						if (
-							'config' in state.configfile &&
-							key in state.configfile.config
-						) {
-							if (
-								'pwm' in state.configfile.config[key] &&
-								state.configfile.config[key].pwm.toLowerCase() === "true"
-							) pwm = true
+						if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+							if ('pwm' in state.configfile.settings[key.toLowerCase()])
+								pwm = state.configfile.settings[key.toLowerCase()].pwm
 
-							if (
-								'scale' in state.configfile.config[key]
-							) scale = state.configfile.config[key].scale
+							if ('scale' in state.configfile.settings[key.toLowerCase()])
+								scale = state.configfile.settings[key.toLowerCase()].scale
 						}
 					}
 
-					output.push({
+					const tmp = {
 						name: name,
 						type: nameSplit[0],
 						power: power,
 						controllable: controllable,
 						pwm: pwm,
+						rpm: rpm,
 						scale: scale,
 						object: value,
-						config: state.configfile.config[key]
-					})
+						config: state.configfile.settings[key]
+					}
+
+					if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+						if ('off_below' in state.configfile.settings[key.toLowerCase()])
+							tmp['off_below'] = state.configfile.settings[key.toLowerCase()].off_below
+
+						if ('max_power' in state.configfile.settings[key.toLowerCase()])
+							tmp['max_power'] = state.configfile.settings[key.toLowerCase()].max_power
+					}
+
+					output.push(tmp)
 				}
 			}
 		}
@@ -252,17 +279,96 @@ export default {
 			if (a.type === "fan") return -1
 			if (b.type === "fan") return 1
 
+			if (a.pwm < b.pwm) return 1
+			if (a.pwm > b.pwm) return -1
+
 			if (a.controllable < b.controllable) return 1
 			if (a.controllable > b.controllable) return -1
 
-			let nameA = a.name.toUpperCase()
-			let nameB = b.name.toUpperCase()
+			const nameA = a.name.toUpperCase()
+			const nameB = b.name.toUpperCase()
 
 			if (nameA < nameB) return -1
 			if (nameA > nameB) return 1
 
 			return 0
 		})
+	},
+
+	getAdditionSensors: (state, getters, rootState, rootGetters) => (name) => {
+		let additionValues = {}
+		additionalSensors.forEach(sensorName => {
+			if (sensorName+" "+name in state) {
+				Object.keys(state[sensorName+" "+name]).forEach(key => {
+					if (key !== "temperature") {
+						let tmp = {}
+						tmp[key] = {}
+						tmp[key]['value'] = state[sensorName+" "+name][key]
+						tmp[key]['gui'] = rootGetters["gui/getDatasetAdditionalSensorValue"]({
+							name: name,
+							sensor: key
+						})
+
+						switch(key) {
+							case 'pressure':
+								tmp[key]['unit'] = "hPa"
+								break
+
+							case 'humidity':
+								tmp[key]['unit'] = "%"
+								break
+
+							default:
+								tmp[key]['unit'] = ""
+						}
+
+						additionValues = Object.assign(additionValues, tmp)
+					}
+				})
+			}
+		})
+
+		return additionValues
+	},
+
+	getTempListAdditionSensors: (state, getters, rootState, rootGetters) => (name) => {
+		let additionValues = {}
+		additionalSensors.forEach(sensorName => {
+			if (sensorName+" "+name in state) {
+				Object.keys(state[sensorName+" "+name]).forEach(key => {
+					if (key !== "temperature") {
+						const settings = rootGetters["gui/getDatasetAdditionalSensorValue"]({
+							name: name,
+							sensor: key
+						})
+
+						if (settings.boolList) {
+							let tmp = {}
+							tmp[key] = {}
+							tmp[key]['value'] = state[sensorName+" "+name][key]
+
+
+							switch(key) {
+								case 'pressure':
+									tmp[key]['unit'] = "hPa"
+									break
+
+								case 'humidity':
+									tmp[key]['unit'] = "%"
+									break
+
+								default:
+									tmp[key]['unit'] = ""
+							}
+
+							additionValues = Object.assign(additionValues, tmp)
+						}
+					}
+				})
+			}
+		})
+
+		return additionValues
 	},
 
 	getAllMacros: state => {
@@ -319,9 +425,25 @@ export default {
 			let nameSplit = key.split(" ");
 
 			if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+				let points = []
+				value.points.split("\n").forEach(function(row) {
+					if (row !== "") {
+						row.split(', ').forEach(function(col) {
+							points.push(parseFloat(col))
+						})
+					}
+				})
+
+				const min = Math.min(...points)
+				const max = Math.max(...points)
+
 				profiles.push({
 					name: nameSplit[1],
 					data: value,
+					points: points,
+					min: min,
+					max: max,
+					variance: Math.abs(min - max),
 					is_active: (currentProfile === nameSplit[1]),
 				});
 			}
@@ -409,4 +531,93 @@ export default {
 	checkConfigMacroCancel: state => {
 		return Object.keys(state.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro cancel_print') !== -1;
 	},
+
+	getEstimatedTimeFile: (state, getters) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			state.print_stats.print_duration > 0 &&
+			getters.getPrintPercent > 0
+		) {
+			return (state.print_stats.print_duration / getters.getPrintPercent - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeFilament: (state) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			'filament_used' in state.print_stats &&
+			'current_file' in state &&
+			'filament_total' in state.current_file &&
+			state.print_stats.print_duration > 0 &&
+			state.current_file.filament_total > 0 &&
+			state.current_file.filament_total > state.print_stats.filament_used
+		) {
+			return (state.print_stats.print_duration / (state.print_stats.filament_used / state.current_file.filament_total) - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeSlicer: (state) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			'current_file' in state &&
+			'estimated_time' in state.current_file &&
+			state.print_stats.print_duration > 0 &&
+			state.current_file.estimated_time > 0 &&
+			state.current_file.estimated_time > state.print_stats.print_duration
+		) {
+			return (state.current_file.estimated_time - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeAvg: (state, getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.getEstimatedTimeFile > 0) {
+			time += parseInt(getters.getEstimatedTimeFile)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeFilament > 0) {
+			time += parseInt(getters.getEstimatedTimeFilament)
+			timeCount++
+		}
+
+		if (time && timeCount) return (time / timeCount)
+
+		return 0
+	},
+
+	getEstimatedTimeETA: (state, getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.getEstimatedTimeFile > 0) {
+			time += parseInt(getters.getEstimatedTimeFile)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeFilament > 0) {
+			time += parseInt(getters.getEstimatedTimeFilament)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeSlicer > 0) {
+			time += parseInt(getters.getEstimatedTimeSlicer)
+			timeCount++
+		}
+
+		if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+
+		return 0
+	}
 }

@@ -8,11 +8,11 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-led-off</v-icon>Neopixel</span>
+                <span class="subheading"><v-icon left>mdi-led-off</v-icon>{{$t('Panels.NeopixelPanel.Neopixel')}}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn small color="primary" @click="turnOff()">
-                <v-icon>mdi-power</v-icon>Off
+                <v-icon>mdi-power</v-icon>{{$t('Panels.NeopixelPanel.Off')}}
             </v-btn>
         </v-toolbar>
         <v-card-text class="px-0 py-0">

@@ -8,14 +8,14 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-cog</v-icon>Theme</span>
+                <span class="subheading"><v-icon left>mdi-cog</v-icon>{{$t('Settings.ThemePanel.Theme')}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolLightMode" label="Light Mode" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolLightMode" :label="$t('Settings.ThemePanel.LightMode')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
             </v-container>
