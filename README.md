@@ -24,22 +24,15 @@ Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.
 
 ## Installation
 
-Firstly make sure you've installed the Vanilla Mainsail: [Tutorial](https://docs.mainsail.xyz/setup/).
+Firstly make sure you've installed the Vanilla Mainsail: Tutorial.
 
-#### Install Git first
+#### Run install script
 
-    $ sudo apt install git
+    $ bash <(curl -s https://raw.githubusercontent.com/eliteSchwein/modded-mainsail/master/scripts/install.sh)
 
-#### Next, clone this repository:
+    This will install modded mainsail on Port 800, to configure the correct ports please edit the nginx config via
 
-    $ git clone https://github.com/eliteSchwein/modded-mainsail.git
-
-#### Then run install script
-
-    This will replace the current mainsail config
-
-    $ bash cd modded-mainsail
-    $ bash scripts/install.sh
+    $ sudo nano /etc/nginx/sites-enabled/modded-mainsail
 
 ## Features
 
