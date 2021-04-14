@@ -6,7 +6,7 @@ Mainsail a lightweight & responsive web interface for [Klipper](https://github.c
 
 [Getting Started](https://docs.mainsail.xyz/setup)
 
-Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.mainsail.xyz). Find out [more](https://docs.mainsail.xyz/setup#mymainsailxyz).
+Mainsail is also available in remote mode on [http://mainsail.eliteschw31n.de](http://mainsail.eliteschw31n.de). Find out [more](https://docs.mainsail.xyz/setup#mymainsailxyz).
 
 [Documentation](https://docs.mainsail.xyz)  
 [Release Notes](https://github.com/meteyou/mainsail/releases)
