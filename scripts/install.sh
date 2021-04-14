@@ -23,7 +23,7 @@ unzip_latest_version()
     unzip -o mainsail.zip -d ./modded-mainsail
 }
 
-download_config()
-download_latest_version()
-unzip_latest_version()
-install_config()
+download_config
+download_latest_version
+unzip_latest_version
+install_config
