@@ -32,7 +32,7 @@ Firstly make sure you've installed the Vanilla Mainsail: Tutorial.
 
     This will install modded mainsail on Port 800, to configure the correct ports please edit the nginx config via
 
-    $ sudo nano /etc/nginx/sites-enabled/modded-mainsail
+    $ sudo nano /etc/nginx/sites-enabled/modded-mainsail.conf
 
 ## Features
 
