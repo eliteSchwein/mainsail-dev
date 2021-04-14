@@ -14,7 +14,7 @@ install_config()
 download_latest_version()
 {
     echo "Download Modded Mainsail"
-    wget -q https://github.com/eliteSchwein/modded-mainsail/releases/latest/download/mainsail.zip -O mainsail.zip
+    wget -q https://github.com/eliteSchwein/modded-mainsail/releases/latest/download/modded-mainsail.zip -O mainsail.zip
 }
 unzip_latest_version()
 {

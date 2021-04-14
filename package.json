@@ -10,7 +10,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build && npm run build.zip",
     "lint": "vue-cli-service lint",
-    "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
+    "build.zip": "cd ./dist && zip -r modded-mainsail.zip ./ && cd ..",
     "i18n-extract": "vue-i18n-extract use-config"
   },
   "dependencies": {
