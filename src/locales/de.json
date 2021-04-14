@@ -97,6 +97,7 @@
 		"LayerHeight": "Schichthöhe",
 		"FilamentUsage": "Filament Verbrauch",
 		"PrintTime": "Druckzeit",
+		"PrintedFiles": "bereits gedruckt",
 		"Slicer": "Slicer"
 	},
 	"Console": {
@@ -331,6 +332,10 @@
 			"HideTemperatures": "Temperaturen ausblenden",
 			"CustomFilters": "Benutzerdefinierter Filter",
 			"Rules": "Regeln"
+		},
+		"ThemePanel": {
+			"Theme": "Design",
+			"LightMode": "Heller Modus"
 		},
 		"NeopixelPanel": {
 			"Neopixel": "Neopixel",

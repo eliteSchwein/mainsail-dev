@@ -97,6 +97,7 @@
 		"LayerHeight": "Высота слоя",
 		"FilamentUsage": "Потребление нитей",
 		"PrintTime": "Время печати",
+    	"PrintedFiles": "Распечатанные файлы",
 		"Slicer": "Slicer"
 	},
 	"Console": {
@@ -331,6 +332,10 @@
 			"HideTemperatures": "Скрытые температуры",
 			"CustomFilters": "Пользовательский фильтр",
 			"Rules": "Правила"
+		},
+		"ThemePanel": {
+			"Theme": "Тема",
+			"LightMode": "Легкий режим"
 		},
 		"NeopixelPanel": {
 			"Neopixel": "Neopixel",

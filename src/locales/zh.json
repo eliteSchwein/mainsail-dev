@@ -96,6 +96,7 @@
 		"LayerHeight": "层高",
 		"FilamentUsage": "耗材使用",
 		"PrintTime": "打印时间",
+		"PrintedFiles": "打印的文件",
 		"Slicer": "切片"
 	},
 	"Console": {
@@ -316,6 +317,10 @@
 			"HideTemperatures": "隐藏温度",
 			"CustomFilter": "自定义筛选器",
 			"Rules": "规则"
+		},
+		"ThemePanel": {
+			"Theme": "主题",
+			"LightMode": "灯光模式"
 		},
 		"NeopixelPanel": {
 			"Neopixel": "Neopixel",

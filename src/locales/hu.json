@@ -97,6 +97,7 @@
 		"LayerHeight": "Rétegmagasság",
 		"FilamentUsage": "Filament felhasználás",
 		"PrintTime": "Nyomtatási idő",
+		"PrintedFiles": "File Stampati",
 		"Slicer": "Slicer"
 	},
 	"Console": {
@@ -315,6 +316,10 @@
 			"HideTemperatures": "Hőmérsékletek rejtése",
 			"CustomFilters": "Egyedi szűrők",
 			"Rules": "Szabályok"
+		},
+		"ThemePanel": {
+			"Theme": "Téma",
+			"LightMode": "Fény mód"
 		},
 		"NeopixelPanel": {
 			"Neopixel": "Neopixel",
