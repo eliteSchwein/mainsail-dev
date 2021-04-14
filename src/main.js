@@ -2,12 +2,16 @@ import Vue from 'vue'
 import WebSocketClient from './plugins/wsClient'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
+import i18n from './plugins/i18n'
+import './plugins/longpress';
 import VueResource from 'vue-resource'
 import './components'
 import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
 import VueTouchKeyboard from "vue-touch-keyboard";
+import VueObserveVisibility from 'vue-observe-visibility';
+
 
 Vue.config.productionTip = false;
 
@@ -15,6 +19,7 @@ export const bus = new Vue();
 
 Vue.use(VueResource);
 Vue.use(VueTouchKeyboard);
+Vue.use(VueObserveVisibility);
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*';
@@ -22,6 +27,7 @@ Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Conte
 Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIONS, DELETE, OPTIONS';
 
 Vue.component('vue-headful', vueHeadful);
+
 
 fetch('/config.json')
 .then(res => res.json())
@@ -41,8 +47,10 @@ fetch('/config.json')
       vuetify,
       router,
       store,
+      i18n,
       render: h => h(App)
     }).$mount('#app')
+
 })
 .catch((error) => {
     let p = document.createElement("p");
@@ -51,3 +59,5 @@ fetch('/config.json')
     document.getElementById('app').append(p);
     window.console.error('Error:', error);
 });
+
+

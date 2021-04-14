@@ -9,6 +9,15 @@ temp
 .version
 .versions
 .changelog
+.idea
 package-lock.json
 *.local
 dist - remote
+docker/gcode
+docker/logs
+docker/moonraker
+docker/config/**/*
+docker/config/*.cfg
+docker/config/*.conf
+docker/config/.mainsail.json
+docker/config/.theme

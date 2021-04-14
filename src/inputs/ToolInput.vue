@@ -17,6 +17,7 @@
         class="tool-input"
         :items="items"
         item-text="value"
+        type="number"
         @change="setTemps"
     ></v-combobox>
 </template>
